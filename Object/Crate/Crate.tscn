@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Object/Crate/Crate.gd" type="Script" id=1]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 16, 16 )
+
+[node name="Crate" type="RigidBody2D" groups=[
+"grab",
+]]
+process_priority = 1
+collision_layer = 9
+mode = 2
+can_sleep = false
+script = ExtResource( 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+color = Color( 0.486275, 0.364706, 0.258824, 1 )
+polygon = PoolVector2Array( -16, -16, 16, -16, 16, 16, -16, 16 )

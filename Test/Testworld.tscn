@@ -1,6 +1,8 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Object/Player/Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Object/Camera/Camera.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Object/Crate/Crate.tscn" type="PackedScene" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 8, 8 )
@@ -8,7 +10,7 @@ extents = Vector2( 8, 8 )
 [node name="Node2D" type="Node2D"]
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
-position = Vector2( 512, 592 )
+position = Vector2( -456, 600 )
 scale = Vector2( 64, 1 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
@@ -119,3 +121,24 @@ polygon = PoolVector2Array( -8, -8, 8, -8, 8, 8, -8, 8 )
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
 position = Vector2( 32, 560 )
+
+[node name="Crate2" parent="." instance=ExtResource( 3 )]
+position = Vector2( -88, 576 )
+
+[node name="Camera" parent="." instance=ExtResource( 2 )]
+position = Vector2( 160, 368 )
+
+[node name="Crate" parent="." instance=ExtResource( 3 )]
+position = Vector2( 448, 416 )
+
+[node name="Crate3" parent="." instance=ExtResource( 3 )]
+position = Vector2( 448, 480 )
+
+[node name="Crate4" parent="." instance=ExtResource( 3 )]
+position = Vector2( 464, 536 )
+
+[node name="Crate5" parent="." instance=ExtResource( 3 )]
+position = Vector2( 488, 488 )
+
+[node name="Crate6" parent="." instance=ExtResource( 3 )]
+position = Vector2( 512, 536 )

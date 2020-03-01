@@ -21,6 +21,8 @@ config/icon="res://icon.png"
 
 [display]
 
+window/size/width=800
+window/size/height=480
 window/stretch/mode="viewport"
 window/stretch/aspect="keep"
 
@@ -62,6 +64,11 @@ action_grab={
 2d_physics/layer_1="solid"
 2d_physics/layer_2="player"
 2d_physics/layer_3="danger"
+2d_physics/layer_4="grab"
+
+[physics]
+
+2d/default_gravity=640
 
 [rendering]
 

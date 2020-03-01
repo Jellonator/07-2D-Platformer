@@ -1,5 +1,7 @@
 extends RigidBody2D
 
+const TERMINAL_VELOCITY := 800
+
 onready var node_camera := $Node/Camera2D
 onready var node_gfx := $Polygon2D
 # true if currently grabbed
@@ -19,9 +21,11 @@ func _integrate_forces(state: Physics2DDirectBodyState):
 		state.transform.origin = teleport_position
 		teleport_position = null
 		node_gfx.position = Vector2.ZERO
+	state.integrate_forces()
 	if is_grabbed:
 		state.linear_velocity = Vector2.ZERO
-	state.integrate_forces()
+	if state.linear_velocity.y > TERMINAL_VELOCITY:
+		state.linear_velocity.y = TERMINAL_VELOCITY
 	gpos = state.transform.origin
 
 func grab_begin():

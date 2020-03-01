@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Object/Player/Player.gd" type="Script" id=1]
 
@@ -7,6 +7,9 @@ extents = Vector2( 16, 16 )
 
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 22, 14 )
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 15, 15 )
 
 [node name="Player" type="KinematicBody2D"]
 process_priority = 100
@@ -35,9 +38,15 @@ position = Vector2( 0, -32 )
 
 [node name="DropPosition" type="Position2D" parent="Flip"]
 process_priority = -1
-position = Vector2( 32, 0 )
+position = Vector2( 32.5, 0 )
 
-[node name="PinJoint2D" type="PinJoint2D" parent="."]
-node_a = NodePath("..")
+[node name="DropArea" type="Area2D" parent="Flip"]
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Flip/DropArea"]
+position = Vector2( 32, 0 )
+shape = SubResource( 3 )
 [connection signal="body_entered" from="Flip/GrabArea" to="." method="_on_GrabArea_body_entered"]
 [connection signal="body_exited" from="Flip/GrabArea" to="." method="_on_GrabArea_body_exited"]
+[connection signal="body_entered" from="Flip/DropArea" to="." method="_on_DropArea_body_entered"]
+[connection signal="body_exited" from="Flip/DropArea" to="." method="_on_DropArea_body_exited"]

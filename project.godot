@@ -68,7 +68,7 @@ action_grab={
 
 [physics]
 
-2d/default_gravity=640
+2d/default_gravity=800
 
 [rendering]
 

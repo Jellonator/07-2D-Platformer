@@ -1,19 +1,15 @@
 extends KinematicBody2D
 
-const TERMINAL_VELOCITY := 800
-const MAX_SPEED := 240.0
-const MOVE_ACCEL := 1600.0
-const GRAVITY := 800.0
-const JUMP_SPEED := 400.0
-const JUMP_SPEED_GRAB := 350.0
+const TERMINAL_VELOCITY := 400
+const MAX_SPEED := 120.0
+const MOVE_ACCEL := 800.0
+const GRAVITY := 600.0
+const JUMP_SPEED := 260.0
+const JUMP_SPEED_GRAB := 220.0
 
 var velocity := Vector2()
 var grabbed_object = null
 var potential_grabs := []
-var num_objects_in_drop_area := 0
-
-func can_drop() -> bool:
-	return num_objects_in_drop_area == 0
 
 func _physics_process(delta: float):
 	velocity += Vector2(0, 1) * delta * GRAVITY
@@ -32,16 +28,16 @@ func _physics_process(delta: float):
 		velocity.x = clamp(velocity.x - accel, -MAX_SPEED, MAX_SPEED)
 	velocity.y = min(velocity.y, TERMINAL_VELOCITY)
 	if is_on_floor():
-		velocity = move_and_slide_with_snap(velocity, Vector2(0, 4), Vector2(0, -1), true, 4, 0.785398, false)
+		velocity = move_and_slide_with_snap(velocity, Vector2(0, 2), Vector2(0, -1), true, 4, 0.785398, false)
 	else:
 		velocity = move_and_slide(velocity, Vector2(0, -1), true, 4, 0.785398, false)
 	if Input.is_action_just_pressed("action_grab"):
 		if grabbed_object != null:
-			if can_drop():
-				grabbed_object.grab_end()
-				grabbed_object.teleport_to($Flip/DropPosition.global_position, false)
-				grabbed_object.apply_impulse(Vector2.ZERO, velocity)
-				grabbed_object = null
+			grabbed_object.grab_end()
+			if not Input.is_action_pressed("move_down"):
+				var dir = ($Flip/DropPosition.global_position - $Flip/GrabPosition.global_position).normalized()
+				grabbed_object.apply_impulse(Vector2.ZERO, velocity + dir * 60.0)
+			grabbed_object = null
 		elif potential_grabs.size() > 0:
 			grabbed_object = potential_grabs[0]
 			grabbed_object.grab_begin()
@@ -61,9 +57,3 @@ func _on_GrabArea_body_entered(body):
 
 func _on_GrabArea_body_exited(body):
 	potential_grabs.erase(body)
-
-func _on_DropArea_body_entered(body):
-	num_objects_in_drop_area += 1
-
-func _on_DropArea_body_exited(body):
-	num_objects_in_drop_area -= 1

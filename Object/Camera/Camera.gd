@@ -15,6 +15,7 @@ onready var gpos := self.global_position
 func _ready():
 	node_camera.global_position = global_position
 	custom_integrator = true
+	$EditorGfx.queue_free()
 
 func _integrate_forces(state: Physics2DDirectBodyState):
 	if teleport_position != null:

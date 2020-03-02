@@ -2,9 +2,16 @@ extends RigidBody2D
 
 var is_grabbed := false
 var teleport_position = null
+onready var shapes = [
+	$CollisionShape2D,
+	$CollisionShape2D2,
+	$Solid/Shape,
+	$CollisionShape2D3
+]
 
 func _ready():
 	custom_integrator = true
+	$Solid.add_collision_exception_with(self)
 
 func _integrate_forces(state: Physics2DDirectBodyState):
 	if teleport_position != null:
@@ -17,12 +24,14 @@ func _integrate_forces(state: Physics2DDirectBodyState):
 
 func grab_begin():
 	is_grabbed = true
-	$CollisionShape2D.disabled = true
+	for shape in shapes:
+		shape.disabled = true
 	gravity_scale = 0.0
 
 func grab_end():
 	is_grabbed = false
-	$CollisionShape2D.disabled = false
+	for shape in shapes:
+		shape.disabled = false
 	gravity_scale = 1.0
 
 func teleport_to(pos: Vector2, move_with_camera: bool):

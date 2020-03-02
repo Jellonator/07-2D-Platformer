@@ -9,6 +9,8 @@ onready var shapes = [
 	$CollisionShape2D3
 ]
 
+onready var node_gfx := $Gfx
+
 func _ready():
 	custom_integrator = true
 	$Solid.add_collision_exception_with(self)
@@ -17,7 +19,7 @@ func _integrate_forces(state: Physics2DDirectBodyState):
 	if teleport_position != null:
 		state.transform.origin = teleport_position
 		teleport_position = null
-		$Polygon2D.position = Vector2.ZERO
+		node_gfx.position = Vector2.ZERO
 	if is_grabbed:
 		state.linear_velocity = Vector2.ZERO
 	state.integrate_forces()
@@ -37,4 +39,7 @@ func grab_end():
 func teleport_to(pos: Vector2, move_with_camera: bool):
 	teleport_position = pos
 	if move_with_camera:
-		$Polygon2D.global_position = teleport_position
+		node_gfx.global_position = teleport_position
+
+func _physics_process(delta):
+	node_gfx.global_position = global_position.round()

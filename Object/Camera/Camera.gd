@@ -3,7 +3,7 @@ extends RigidBody2D
 const TERMINAL_VELOCITY := 800
 
 onready var node_camera := $Node/Camera2D
-onready var node_gfx := $Polygon2D
+onready var node_gfx := $Gfx
 # true if currently grabbed
 var is_grabbed := false
 # The position to teleport to. 'null' if there is no teleportation
@@ -56,3 +56,4 @@ func _physics_process(delta):
 		node_camera.position = target_position
 	else:
 		node_camera.position += diff.normalized() * speed
+	node_gfx.global_position = global_position.round()

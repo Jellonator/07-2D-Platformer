@@ -12,6 +12,7 @@ var grabbed_object = null
 var potential_grabs := []
 
 func _physics_process(delta: float):
+#	print(get_floor_velocity())
 	velocity += Vector2(0, 1) * delta * GRAVITY
 	var move_dir := Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
 	if move_dir < -1e-5:
@@ -27,10 +28,18 @@ func _physics_process(delta: float):
 	else:
 		velocity.x = clamp(velocity.x - accel, -MAX_SPEED, MAX_SPEED)
 	velocity.y = min(velocity.y, TERMINAL_VELOCITY)
+	var floorveloc := get_floor_velocity() * delta
+#	move_and_collide(floorveloc * delta)
+	velocity += floorveloc
 	if is_on_floor():
 		velocity = move_and_slide_with_snap(velocity, Vector2(0, 2), Vector2(0, -1), true, 4, 0.785398, false)
 	else:
 		velocity = move_and_slide(velocity, Vector2(0, -1), true, 4, 0.785398, false)
+#	if floorveloc.y < 0:
+	velocity -= floorveloc
+#		floorveloc.y = 0
+#	for i in range(get_slide_count()):
+#		print(get_slide_collision(i).collider_velocity)
 	if Input.is_action_just_pressed("action_grab"):
 		if grabbed_object != null:
 			grabbed_object.grab_end()

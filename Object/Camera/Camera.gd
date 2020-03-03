@@ -56,4 +56,4 @@ func _physics_process(delta):
 		node_camera.position = target_position
 	else:
 		node_camera.position += diff.normalized() * speed
-	node_gfx.global_position = global_position.round()
+#	node_gfx.global_position = global_position.round()

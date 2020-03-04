@@ -1,11 +1,10 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Object/Player/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Object/Camera/Camera.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Object/Crate/Crate.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Tiles/ground.tres" type="TileSet" id=4]
-[ext_resource path="res://Object/MovingPlatform/Platform.gd" type="Script" id=5]
-[ext_resource path="res://Object/Oneway.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Object/MovingPlatform/Platform.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Object/Button/Button.tscn" type="PackedScene" id=7]
 
 [sub_resource type="Curve2D" id=1]
@@ -19,24 +18,7 @@ _data = {
 position = Vector2( 0, 16 )
 curve = SubResource( 1 )
 
-[node name="Platform" type="Node2D" parent="Path2D" groups=[
-"button",
-]]
-process_priority = -10
-position = Vector2( 128, 512 )
-script = ExtResource( 5 )
-speed = 32.0
-initial_node = 1
-initial_direction = 1
-button_mode = 1
-
-[node name="Polygon2D" type="Polygon2D" parent="Path2D/Platform"]
-color = Color( 0.490196, 0.490196, 0.490196, 1 )
-polygon = PoolVector2Array( -32, 0, 32, 0, 32, 16, -32, 16 )
-
-[node name="Oneway" parent="Path2D/Platform" instance=ExtResource( 6 )]
-visible = false
-scale = Vector2( 4, 1 )
+[node name="Platform" parent="Path2D" instance=ExtResource( 5 )]
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
 position = Vector2( 136, 568 )

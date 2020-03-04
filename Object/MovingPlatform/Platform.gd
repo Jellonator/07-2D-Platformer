@@ -11,10 +11,10 @@ export(ButtonMode) var button_mode := ButtonMode.IGNORE
 onready var path := get_parent() as Path2D
 onready var curve := path.curve
 var dir := 1
-var cpoint := 0
-var nextpoint := 1
-var timer := 0.0
+var current_node := 0
+var node_position := 0.0
 var button_status := 0
+var move_dir := 0.0
 
 func editor_update_position():
 	if not Engine.editor_hint or get_parent() == null:
@@ -41,56 +41,28 @@ func _ready():
 		editor_update_position()
 		return
 	if initial_node == 0 and initial_position <= 0.0:
-		cpoint = 0
+		current_node = 0
 		dir = 1
-		nextpoint = 1
-		timer = 0.0
+		node_position = 0.0
 	elif initial_node >= curve.get_point_count() and initial_position >= 1.0:
 		dir = -1
-		cpoint = curve.get_point_count()-1
-		nextpoint = curve.get_point_count()-2
-		timer = 0.0
+		current_node = curve.get_point_count()-2
+		node_position = 1.0
 	else:
 		if initial_direction == 0:
-			cpoint = initial_node
-			nextpoint = initial_node + 1
-			timer = initial_position
+			current_node = initial_node
+			node_position = initial_position
 			dir = 1
 		else:
 			dir = -1
-			cpoint = initial_node + 1
-			nextpoint = initial_node
-			timer = 1.0-initial_position
-
-#func cubicInOut(t: float) -> float:
-#	t *= 2.0
-#	if t <= 1:
-#		return (t * t * t) / 2.0
-#	else:
-#		t -= 2.0
-#		return (t * t * t + 2.0) / 2.0
-#
-#func expInOut(t: float) -> float:
-#	t *= 2.0
-#	if t <= 1:
-#		return pow(2, 10 * t - 10) / 2.0
-#	else:
-#		return (2.0 - pow(2, 10 - 10 * t)) / 2.0
-#
-#func sineInOut(t: float) -> float:
-#	return (1.0 - cos(PI * t)) / 2.0;
-
-func swap_nodes():
-	var tmp := cpoint
-	cpoint = nextpoint
-	nextpoint = tmp
-	timer = 1.0 - timer
+			current_node = initial_node
+			node_position = initial_position
 
 func _physics_process(delta):
 	if Engine.editor_hint:
 		return
-	var frompos := curve.get_point_position(cpoint)
-	var topos := curve.get_point_position(nextpoint)
+	var frompos := curve.get_point_position(current_node)
+	var topos := curve.get_point_position(current_node+1)
 	var active := true
 	var do_reverse := true
 	match button_mode:
@@ -104,45 +76,34 @@ func _physics_process(delta):
 			active = true
 			do_reverse = false
 			if button_status > 0:
-				if dir == -1:
-					dir = 1
-					swap_nodes()
+				dir = 1
 			else:
-				if dir == 1:
-					dir = -1
-					swap_nodes()
-	if active:
-		timer += delta * speed / topos.distance_to(frompos)
-	if timer > 1.0:
-		if dir == 1:
-			if nextpoint+1 >= curve.get_point_count():
-				if do_reverse:
-					dir = -1
-					cpoint = nextpoint
-					nextpoint = cpoint - 1
-				else:
-					timer = 1.0
-			else:
-				nextpoint += 1
-				cpoint += 1
-				timer = 0.0
+				dir = -1
+	var target_dir = dir
+	if not active:
+		target_dir = 0
+	if move_dir < target_dir:
+		move_dir = clamp(move_dir + delta * 8.0, -1.0, target_dir)
+	elif move_dir > target_dir:
+		move_dir = clamp(move_dir - delta * 8.0, target_dir, 1.0)
+	node_position += move_dir * delta * speed / topos.distance_to(frompos)
+	if node_position <= 0.0:
+		if current_node == 0:
+			node_position = 0
+			if do_reverse:
+				dir = 1
 		else:
-			if nextpoint-1 < 0:
-				if do_reverse:
-					dir = 1
-					nextpoint = 1
-					cpoint = 0
-				else:
-					timer = 1.0
-			else:
-				nextpoint -= 1
-				cpoint -= 1
-				timer = 0.0
-	var pos: Vector2
-	if dir == 1:
-		pos = curve.interpolate(cpoint, timer)
-	else:
-		pos = curve.interpolate(nextpoint, 1.0-timer)
+			node_position = 1.0
+			current_node -= 1
+	elif node_position >= 1.0:
+		if current_node == curve.get_point_count()-2:
+			node_position = 1.0
+			if do_reverse:
+				dir = -1
+		else:
+			node_position = 0.0
+			current_node += 1
+	var pos := curve.interpolate(current_node, node_position)
 	var ppos = global_position
 	position = pos
 	$Polygon2D.global_position = ppos

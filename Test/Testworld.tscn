@@ -20,8 +20,12 @@ curve = SubResource( 1 )
 
 [node name="Platform" type="Node2D" parent="Path2D"]
 process_priority = -10
-position = Vector2( 64, 512 )
+position = Vector2( 175.763, 448 )
 script = ExtResource( 5 )
+speed = 2.0
+initial_node = 2
+initial_position = 0.611
+initial_direction = 1
 
 [node name="Polygon2D" type="Polygon2D" parent="Path2D/Platform"]
 color = Color( 0.490196, 0.490196, 0.490196, 1 )

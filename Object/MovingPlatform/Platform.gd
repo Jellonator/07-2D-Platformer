@@ -1,15 +1,61 @@
+tool
 extends Node2D
 
 export var speed := 16.0
+export(int) var initial_node := 0 setget set_initial_node
+export(float, 0.0, 1.0) var initial_position := 0.0 setget set_initial_position
+export(int, "Forward", "Backward") var initial_direction := 0
 onready var path := get_parent() as Path2D
-onready var curve := path.curve as Curve2D
+onready var curve := path.curve
 var dir := 1
 var cpoint := 0
 var nextpoint := 1
 var timer := 0.0
 
+func editor_update_position():
+	if not Engine.editor_hint:
+		return
+	self.position = get_parent().curve.interpolate(initial_node, sineInOut(initial_position))
+
+func set_initial_node(id: int):
+	if Engine.editor_hint:
+		var n = get_parent().curve.get_point_count() - 1
+		print(n)
+		initial_node = int(clamp(id, 0, n-1))
+		editor_update_position()
+	else:
+		initial_node = id
+
+func set_initial_position(pos: float):
+	initial_position = pos
+	editor_update_position()
+
 func _ready():
-	pass
+	if Engine.editor_hint:
+		return
+	prints(initial_node, initial_position)
+	if initial_node == 0 and initial_position <= 0.0:
+		cpoint = 0
+		dir = 1
+		nextpoint = 1
+		timer = 0.0
+	elif initial_node >= curve.get_point_count() and initial_position >= 1.0:
+		dir = -1
+		cpoint = curve.get_point_count()-1
+		nextpoint = curve.get_point_count()-2
+		timer = 0.0
+	else:
+		if initial_direction == 0:
+			cpoint = initial_node
+			nextpoint = initial_node + 1
+			timer = initial_position
+			dir = 1
+		else:
+			dir = -1
+			cpoint = initial_node + 1
+			nextpoint = initial_node
+			timer = 1.0-initial_position
+	prints(cpoint, nextpoint, dir, timer)
 
 func cubicInOut(t: float) -> float:
 	t *= 2.0
@@ -30,6 +76,8 @@ func sineInOut(t: float) -> float:
 	return (1.0 - cos(PI * t)) / 2.0;
 
 func _physics_process(delta):
+	if Engine.editor_hint:
+		return
 	var frompos := curve.get_point_position(cpoint)
 	var topos := curve.get_point_position(nextpoint)
 	timer += delta * speed / topos.distance_to(frompos)

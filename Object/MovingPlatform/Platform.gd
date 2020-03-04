@@ -13,14 +13,13 @@ var nextpoint := 1
 var timer := 0.0
 
 func editor_update_position():
-	if not Engine.editor_hint:
+	if not Engine.editor_hint or get_parent() == null:
 		return
 	self.position = get_parent().curve.interpolate(initial_node, sineInOut(initial_position))
 
 func set_initial_node(id: int):
-	if Engine.editor_hint:
+	if Engine.editor_hint and get_parent() != null:
 		var n = get_parent().curve.get_point_count() - 1
-		print(n)
 		initial_node = int(clamp(id, 0, n-1))
 		editor_update_position()
 	else:
@@ -28,10 +27,14 @@ func set_initial_node(id: int):
 
 func set_initial_position(pos: float):
 	initial_position = pos
-	editor_update_position()
+	if Engine.editor_hint:
+		editor_update_position()
 
 func _ready():
 	if Engine.editor_hint:
+		var n = get_parent().curve.get_point_count() - 1
+		initial_node = int(clamp(initial_node, 0, n-1))
+		editor_update_position()
 		return
 	prints(initial_node, initial_position)
 	if initial_node == 0 and initial_position <= 0.0:
@@ -107,3 +110,9 @@ func _physics_process(delta):
 	var ppos = global_position
 	position = pos
 	$Polygon2D.global_position = ppos
+
+func do_press():
+	print("activate")
+
+func do_release():
+	print("deactivate")

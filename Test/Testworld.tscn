@@ -23,11 +23,12 @@ curve = SubResource( 1 )
 "button",
 ]]
 process_priority = -10
-position = Vector2( 128, 480 )
+position = Vector2( 128, 512 )
 script = ExtResource( 5 )
+speed = 32.0
 initial_node = 1
-initial_position = 0.5
 initial_direction = 1
+button_mode = 3
 
 [node name="Polygon2D" type="Polygon2D" parent="Path2D/Platform"]
 color = Color( 0.490196, 0.490196, 0.490196, 1 )

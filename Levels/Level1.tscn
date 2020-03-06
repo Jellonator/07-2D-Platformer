@@ -1,16 +1,20 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Object/Player/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Object/Camera/Camera.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Object/MovingPlatform/Platform.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Tiles/ground.tres" type="TileSet" id=4]
+[ext_resource path="res://Object/Film/Film.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Levels/Level.gd" type="Script" id=6]
+[ext_resource path="res://Object/Gui/GuiOverlay.tscn" type="PackedScene" id=7]
 
 [sub_resource type="Curve2D" id=1]
 _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, -32, -96, 0, 0, 0, 0, 304, -96, 0, 0, 0, 0, 304, -256 )
 }
 
-[node name="Node2D" type="Node2D"]
+[node name="Level1" type="Node2D"]
+script = ExtResource( 6 )
 
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = ExtResource( 4 )
@@ -32,7 +36,7 @@ format = 1
 tile_data = PoolIntArray( -458735, 1, 65536, -458734, 1, 65537, -458733, 1, 65537, -458732, 1, 3, -458721, 1, 65536, -458720, 1, 3, -393199, 1, 196609, -393198, 1, 131074, -393197, 1, 131074, -393196, 1, 65539, -393185, 1, 196609, -393184, 1, 131075, -393183, 1, 65537, -393182, 1, 3, -327663, 1, 196609, -327662, 1, 131074, -327661, 1, 131074, -327660, 1, 131075, -327659, 1, 3, -327653, 1, 65536, -327652, 1, 3, -327650, 1, 65536, -327649, 1, 65538, -327648, 1, 131074, -327647, 1, 131074, -327646, 1, 131075, -327645, 1, 65537, -327644, 1, 3, -327641, 1, 65536, -327640, 1, 65537, -327639, 1, 3, -262127, 1, 1, -262126, 1, 131073, -262125, 1, 131074, -262124, 1, 131074, -262123, 1, 65539, -262117, 1, 196609, -262116, 1, 131075, -262115, 1, 65537, -262114, 1, 65538, -262113, 1, 131074, -262112, 1, 131074, -262111, 1, 131074, -262110, 1, 131074, -262109, 1, 131074, -262108, 1, 131075, -262107, 1, 65537, -262106, 1, 65537, -262105, 1, 65538, -262104, 1, 131074, -262103, 1, 65539, -196590, 1, 196609, -196589, 1, 131074, -196588, 1, 131074, -196587, 1, 65539, -196581, 1, 196609, -196580, 1, 131074, -196579, 1, 131074, -196578, 1, 131074, -196577, 1, 131074, -196576, 1, 131074, -196575, 1, 131074, -196574, 1, 131074, -196573, 1, 131074, -196572, 1, 131074, -196571, 1, 131074, -196570, 1, 196610, -196569, 1, 196611, -196568, 1, 196611, -196567, 1, 196608, -131055, 1, 65536, -131054, 1, 65538, -131053, 1, 131074, -131052, 1, 131074, -131051, 1, 65539, -131045, 1, 1, -131044, 1, 131073, -131043, 1, 131074, -131042, 1, 131074, -131041, 1, 131074, -131040, 1, 131074, -131039, 1, 131074, -131038, 1, 131074, -131037, 1, 131074, -131036, 1, 131074, -131035, 1, 131074, -131034, 1, 65539, -65520, 1, 65536, -65519, 1, 65538, -65518, 1, 131074, -65517, 1, 131074, -65516, 1, 131074, -65515, 1, 131075, -65514, 1, 3, -65508, 1, 196609, -65507, 1, 131074, -65506, 1, 131074, -65505, 1, 131074, -65504, 1, 131074, -65503, 1, 131074, -65502, 1, 131074, -65501, 1, 131074, -65500, 1, 131074, -65499, 1, 196610, -65498, 1, 196608, 16, 1, 1, 17, 1, 196611, 18, 1, 196611, 19, 1, 196611, 20, 1, 196611, 21, 1, 196611, 22, 1, 196608, 28, 1, 1, 29, 1, 196611, 30, 1, 196611, 31, 1, 196611, 32, 1, 196611, 33, 1, 196611, 34, 1, 196611, 35, 1, 196611, 36, 1, 196611, 37, 1, 196608 )
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
-position = Vector2( 0, -8 )
+position = Vector2( 16, -8 )
 
 [node name="Camera" parent="." instance=ExtResource( 2 )]
 position = Vector2( -32, -104 )
@@ -43,4 +47,18 @@ curve = SubResource( 1 )
 [node name="Platform" parent="Path2D" instance=ExtResource( 3 )]
 position = Vector2( -32, -96 )
 speed = 32.0
+initial_node = 0
+initial_position = 0.0
+initial_direction = 0
 button_mode = 1
+button_oneshot = false
+
+[node name="Film" parent="." instance=ExtResource( 5 )]
+position = Vector2( 248, -176 )
+level_id = 1
+
+[node name="Film2" parent="." instance=ExtResource( 5 )]
+position = Vector2( 648, -96 )
+level_id = 2
+
+[node name="GuiOverlay" parent="." instance=ExtResource( 7 )]

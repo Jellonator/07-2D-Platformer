@@ -27,7 +27,6 @@ func _integrate_forces(state: Physics2DDirectBodyState):
 		state.linear_velocity = Vector2.ZERO
 	if state.linear_velocity.y > TERMINAL_VELOCITY:
 		state.linear_velocity.y = TERMINAL_VELOCITY
-#	$Solid.constant_linear_velocity = state.linear_velocity
 
 func grab_begin():
 	is_grabbed = true
@@ -45,6 +44,3 @@ func teleport_to(pos: Vector2, move_with_camera: bool):
 	teleport_position = pos
 	if move_with_camera:
 		node_gfx.global_position = teleport_position
-
-#func _physics_process(delta):
-#	node_gfx.global_position = global_position.round()

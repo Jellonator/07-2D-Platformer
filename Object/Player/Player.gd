@@ -29,28 +29,29 @@ func _physics_process(delta: float):
 		velocity.x = clamp(velocity.x - accel, -MAX_SPEED, MAX_SPEED)
 	velocity.y = min(velocity.y, TERMINAL_VELOCITY)
 	var floorveloc := get_floor_velocity() * delta
-#	move_and_collide(floorveloc * delta)
 	velocity += floorveloc
 	if is_on_floor():
 		velocity = move_and_slide_with_snap(velocity, Vector2(0, 2), Vector2(0, -1), true, 4, 0.785398, false)
 	else:
 		velocity = move_and_slide(velocity, Vector2(0, -1), true, 4, 0.785398, false)
-#	if floorveloc.y < 0:
 	velocity -= floorveloc
-#		floorveloc.y = 0
-#	for i in range(get_slide_count()):
-#		print(get_slide_collision(i).collider_velocity)
 	if Input.is_action_just_pressed("action_grab"):
 		if grabbed_object != null:
 			grabbed_object.grab_end()
+			var veloc := Vector2.ZERO
 			if not Input.is_action_pressed("move_down"):
-				var dir = ($Flip/DropPosition.global_position - $Flip/GrabPosition.global_position).normalized()
-				grabbed_object.apply_impulse(Vector2.ZERO, velocity + dir * 60.0)
+				veloc += velocity
+				if is_on_floor():
+					var dir = ($Flip/DropPosition.global_position - $Flip/GrabPosition.global_position).normalized()
+					veloc += dir * 60.0
+			grabbed_object.teleport_to($Flip/GrabPosition.global_position, true)
+			grabbed_object.apply_impulse(Vector2.ZERO, veloc)
 			grabbed_object = null
 		elif potential_grabs.size() > 0:
-			grabbed_object = potential_grabs[0]
-			grabbed_object.grab_begin()
-			grabbed_object.teleport_to($Flip/GrabPosition.global_position, false)
+			if is_on_floor():
+				grabbed_object = potential_grabs[0]
+				grabbed_object.grab_begin()
+				grabbed_object.teleport_to($Flip/GrabPosition.global_position, false)
 	elif grabbed_object != null:
 		grabbed_object.teleport_to($Flip/GrabPosition.global_position, true)
 

@@ -11,6 +11,8 @@ var teleport_position = null
 # Have to store the global position in a separate variable because apparently
 # accessing the global position outside of _integrate_forces is bad and buggy
 onready var gpos := self.global_position
+# Keep track of previous position so that Camera2D can be moved
+onready var ppos := self.global_position
 
 func _ready():
 	node_camera.global_position = global_position
@@ -49,6 +51,9 @@ func teleport_to(pos: Vector2, move_with_camera: bool):
 		node_gfx.global_position = teleport_position
 
 func _physics_process(delta):
+	if not is_grabbed:
+		node_camera.position += (gpos - ppos)
+	ppos = gpos
 	var target_position = gpos
 	var diff = target_position - node_camera.position
 	var speed = (10.0 + diff.length() * 10.0) * delta
@@ -56,4 +61,3 @@ func _physics_process(delta):
 		node_camera.position = target_position
 	else:
 		node_camera.position += diff.normalized() * speed
-#	node_gfx.global_position = global_position.round()

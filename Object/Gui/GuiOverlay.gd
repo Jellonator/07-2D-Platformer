@@ -2,6 +2,9 @@ extends CanvasLayer
 
 var films := {}
 var scene_film := preload("res://Object/Gui/Film.tscn")
+onready var node_films := $Films
+
+var show_film_timer := 0.0
 
 func _ready():
 	yield(get_tree(), "idle_frame")
@@ -16,6 +19,8 @@ func _ready():
 	sorted_ids.sort()
 	for id in sorted_ids:
 		$Films/HBox.add_child(films[id])
+		if get_parent().has_collected_film(id):
+			films[id].collect()
 
 func collect_film(id: int):
 	films[id].collect()

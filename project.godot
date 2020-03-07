@@ -19,6 +19,10 @@ config/name="Photobound"
 run/main_scene="res://Levels/Level1.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+GameData="*res://Global/GameData.gd"
+
 [display]
 
 window/size/width=400

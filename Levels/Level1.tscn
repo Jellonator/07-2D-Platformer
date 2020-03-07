@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Object/Player/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Object/Camera/Camera.tscn" type="PackedScene" id=2]
@@ -6,7 +6,6 @@
 [ext_resource path="res://Tiles/ground.tres" type="TileSet" id=4]
 [ext_resource path="res://Object/Film/Film.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Levels/Level.gd" type="Script" id=6]
-[ext_resource path="res://Object/Gui/GuiOverlay.tscn" type="PackedScene" id=7]
 
 [sub_resource type="Curve2D" id=1]
 _data = {
@@ -15,6 +14,7 @@ _data = {
 
 [node name="Level1" type="Node2D"]
 script = ExtResource( 6 )
+unique_name = "level1"
 
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = ExtResource( 4 )
@@ -60,5 +60,3 @@ level_id = 1
 [node name="Film2" parent="." instance=ExtResource( 5 )]
 position = Vector2( 648, -96 )
 level_id = 2
-
-[node name="GuiOverlay" parent="." instance=ExtResource( 7 )]

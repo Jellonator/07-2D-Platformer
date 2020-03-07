@@ -58,5 +58,5 @@ position = Vector2( 248, -176 )
 level_id = 1
 
 [node name="Film2" parent="." instance=ExtResource( 5 )]
-position = Vector2( 648, -96 )
+position = Vector2( 648, -88 )
 level_id = 2

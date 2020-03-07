@@ -14,6 +14,9 @@ onready var gpos := self.global_position
 # Keep track of previous position so that Camera2D can be moved
 onready var ppos := self.global_position
 
+func get_grab_priority() -> int:
+	return 1
+
 func _ready():
 	node_camera.global_position = global_position
 	custom_integrator = true

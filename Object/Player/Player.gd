@@ -11,8 +11,23 @@ var velocity := Vector2()
 var grabbed_object = null
 var potential_grabs := []
 
+func _sort_grab(a, b):
+	var a_priority = a.get_grab_priority()
+	var b_priority = b.get_grab_priority()
+	if a_priority != b_priority:
+		return a_priority > b_priority
+	var sx = global_position.x
+	return abs(a.global_position.x - sx) < abs(b.global_position.x - sx)
+
+func get_best_grab():
+	if potential_grabs.size() == 0:
+		return null
+	if potential_grabs.size() == 1:
+		return potential_grabs[0]
+	potential_grabs.sort_custom(self, "_sort_grab")
+	return potential_grabs[0]
+
 func _physics_process(delta: float):
-#	print(get_floor_velocity())
 	velocity += Vector2(0, 1) * delta * GRAVITY
 	var move_dir := Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
 	if move_dir < -1e-5:
@@ -49,7 +64,7 @@ func _physics_process(delta: float):
 			grabbed_object = null
 		elif potential_grabs.size() > 0:
 			if is_on_floor():
-				grabbed_object = potential_grabs[0]
+				grabbed_object = get_best_grab()
 				grabbed_object.grab_begin()
 				grabbed_object.teleport_to($Flip/GrabPosition.global_position, false)
 	elif grabbed_object != null:

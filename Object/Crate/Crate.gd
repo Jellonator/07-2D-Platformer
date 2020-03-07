@@ -44,3 +44,6 @@ func teleport_to(pos: Vector2, move_with_camera: bool):
 	teleport_position = pos
 	if move_with_camera:
 		node_gfx.global_position = teleport_position
+
+func get_grab_priority() -> int:
+	return 0

@@ -1,0 +1,51 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Menu/File.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Ext/KenneyUI/Spritesheet/UIpackSheet_transparent.png" type="Texture" id=2]
+[ext_resource path="res://Menu/MainMenu.gd" type="Script" id=3]
+
+[sub_resource type="AtlasTexture" id=1]
+atlas = ExtResource( 2 )
+region = Rect2( 90, 468, 16, 16 )
+
+[node name="MainMenu" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Center" type="CenterContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Saves" type="VBoxContainer" parent="Center"]
+margin_left = 136.0
+margin_top = 68.0
+margin_right = 264.0
+margin_bottom = 172.0
+
+[node name="File1" parent="Center/Saves" instance=ExtResource( 1 )]
+file_name = "user://file1.save"
+title = "File 1"
+
+[node name="File2" parent="Center/Saves" instance=ExtResource( 1 )]
+margin_top = 36.0
+margin_bottom = 68.0
+file_name = "user://file2.save"
+title = "File 2"
+
+[node name="File3" parent="Center/Saves" instance=ExtResource( 1 )]
+margin_top = 72.0
+margin_bottom = 104.0
+file_name = "user://file3.save"
+title = "File 3"
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 136, 68 )
+texture = SubResource( 1 )
+offset = Vector2( -8, 8 )

@@ -4,8 +4,9 @@ const TERMINAL_VELOCITY := 400
 const MAX_SPEED := 120.0
 const MOVE_ACCEL := 800.0
 const GRAVITY := 600.0
-const JUMP_SPEED := 260.0
-const JUMP_SPEED_GRAB := 220.0
+const GRAVITY_FALL := 2000.0
+const JUMP_SPEED := 250.0
+const JUMP_SPEED_GRAB := 210.0
 
 var velocity := Vector2()
 var grabbed_object = null
@@ -28,7 +29,10 @@ func get_best_grab():
 	return potential_grabs[0]
 
 func _physics_process(delta: float):
-	velocity += Vector2(0, 1) * delta * GRAVITY
+	if velocity.y < 0 and not Input.is_action_pressed("action_jump"):
+		velocity += Vector2(0, 1) * delta * GRAVITY_FALL
+	else:
+		velocity += Vector2(0, 1) * delta * GRAVITY
 	var move_dir := Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
 	if move_dir < -1e-5:
 		$Flip.scale.x = -1.0

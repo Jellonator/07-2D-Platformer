@@ -12,6 +12,15 @@ var velocity := Vector2()
 var grabbed_object = null
 var potential_grabs := []
 
+func set_hbox_ground(on_ground: bool):
+	$Air.disabled = on_ground
+	$Ray1.disabled = not on_ground
+	$Ray2.disabled = not on_ground
+	$CollisionPolygon2D.disabled = not on_ground
+
+func _ready():
+	set_hbox_ground(true)
+
 func _sort_grab(a, b):
 	var a_priority = a.get_grab_priority()
 	var b_priority = b.get_grab_priority()
@@ -53,6 +62,7 @@ func _physics_process(delta: float):
 		velocity = move_and_slide_with_snap(velocity, Vector2(0, 2), Vector2(0, -1), true, 4, 0.785398, false)
 	else:
 		velocity = move_and_slide(velocity, Vector2(0, -1), true, 4, 0.785398, false)
+	set_hbox_ground(is_on_floor())
 	velocity -= floorveloc
 	if Input.is_action_just_pressed("action_grab"):
 		if grabbed_object != null:
@@ -76,6 +86,7 @@ func _physics_process(delta: float):
 
 func _input(event):
 	if event.is_action_pressed("action_jump") and is_on_floor():
+		set_hbox_ground(false)
 		if grabbed_object != null:
 			velocity.y = -JUMP_SPEED_GRAB
 		else:

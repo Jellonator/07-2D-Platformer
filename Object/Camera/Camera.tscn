@@ -1,7 +1,8 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Object/Camera/Camera.gd" type="Script" id=1]
 [ext_resource path="res://Object/Camera/camera.png" type="Texture" id=2]
+[ext_resource path="res://icon.png" type="Texture" id=3]
 
 [sub_resource type="PhysicsMaterial" id=1]
 
@@ -10,6 +11,76 @@ extents = Vector2( 7, 8 )
 
 [sub_resource type="RayShape2D" id=3]
 length = 8.0
+
+[sub_resource type="Shader" id=8]
+code = "shader_type canvas_item;
+
+const vec2 SIZE = vec2(400, 240);
+const float BORDER = 12.0;
+const vec4 FILL = vec4(38.0, 43.0, 68.0, 256.0) / 256.0;
+const vec4 EMPTY = vec4(0.0, 0.0, 0.0, 0.0);
+
+void fragment() {
+	vec2 pos = SIZE * UV;
+	float border_dis_x = SIZE.x / 2.0 - abs(pos.x - SIZE.x / 2.0);
+	float border_dis_y = SIZE.y / 2.0 - abs(pos.y - SIZE.y / 2.0);
+	float border_dis = min(border_dis_x, border_dis_y);
+	if (border_dis_x < BORDER && border_dis_y < BORDER) {
+		border_dis_x = BORDER - border_dis_x;
+		border_dis_y = BORDER - border_dis_y;
+		border_dis = BORDER - sqrt(border_dis_x * border_dis_x + border_dis_y * border_dis_y);
+	} else {
+		border_dis = min(border_dis_x, border_dis_y);
+	}
+	if (border_dis > BORDER) {
+		COLOR = EMPTY;
+	} else {
+		float a = (1.0 - float(border_dis) / float(BORDER));
+//		if (a >= 1.0) {
+//			COLOR = FILL;
+//		} else if (a >= 0.8) {
+//			if ((px*2 + py*4) % 5 > 0) {
+//				COLOR = FILL;
+//			} else {
+//				COLOR = EMPTY;
+//			}
+//		} else if (a >= 0.6) {
+//			if ((px + py) % 3 > 0) {
+//				COLOR = FILL;
+//			} else {
+//				COLOR = EMPTY;
+//			}
+//		} else 
+//		if (a >= 0.8) {
+//			if ((px + py) % 2 == 0) {
+//				COLOR = FILL;
+//			} else {
+//				COLOR = EMPTY;
+//			}
+//		} else if (a >= 0.6) {
+//			if ((px + py) % 3 == 0) {
+//				COLOR = FILL;
+//			} else {
+//				COLOR = EMPTY;
+//			}
+//		} else if (a >= 0.0) {
+//			if ((px*2 + py*4 + 1) % 5 == 0) {
+//				COLOR = FILL;
+//			} else {
+//				COLOR = EMPTY;
+//			}
+//		} else {
+//			COLOR = EMPTY;
+//		}
+		COLOR = FILL;
+		COLOR.a = (1.0 - float(border_dis) / float(BORDER)) * 0.5;
+	}
+//	COLOR = vec4(1.0, 1.0, 1.0, clamp(dis_x - 190.0, 0.0, 1.0));
+//	COLOR.b = 1.0;
+}"
+
+[sub_resource type="ShaderMaterial" id=9]
+shader = SubResource( 8 )
 
 [sub_resource type="RectangleShape2D" id=4]
 extents = Vector2( 328, 64 )
@@ -56,6 +127,15 @@ process_priority = 2
 visible = false
 current = true
 smoothing_speed = 10.0
+editor_draw_screen = false
+
+[node name="Displayborder" type="Polygon2D" parent="Node/Camera2D"]
+material = SubResource( 9 )
+z_index = -5
+texture = ExtResource( 3 )
+invert_border = 2.0
+polygon = PoolVector2Array( -200, -120, 200, -120, 200, 120, -200, 120 )
+uv = PoolVector2Array( 0, 0, 64, 0, 64, 64, 0, 64 )
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Node/Camera2D"]
 collision_layer = 0

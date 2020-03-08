@@ -18,6 +18,7 @@ func get_grab_priority() -> int:
 	return 1
 
 func _ready():
+	$Node/Camera2D.show()
 	node_camera.global_position = global_position
 	custom_integrator = true
 	$EditorGfx.queue_free()

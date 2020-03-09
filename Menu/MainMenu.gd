@@ -24,3 +24,5 @@ func _input(event):
 		self.selected_file = (self.selected_file - 1) % files.size()
 	elif event.is_action_pressed("action_jump"):
 		files[self.selected_file].select()
+	elif event.is_action_pressed("action_grab"):
+		files[self.selected_file].delete()

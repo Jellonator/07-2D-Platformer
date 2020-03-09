@@ -7,6 +7,7 @@ export var grid_position_y := 0 setget set_grid_position_y
 var ignore_tx := false
 
 # This is kinda precarious but I don't think there's a better way
+export(String) var real_name := ""
 export(String, FILE, "*.tscn") var level_path
 export(String) var level_name := ""
 export(int) var num_films := 0
@@ -33,3 +34,10 @@ func set_grid_position_x(value: int):
 func set_grid_position_y(value: int):
 	grid_position_y = value
 	update_position()
+
+func get_level_title() -> String:
+	return real_name
+
+func get_film_text() -> String:
+	var num = GameData.count_collected_films_in_level(level_name)
+	return "{0}/{1}".format([num, num_films])

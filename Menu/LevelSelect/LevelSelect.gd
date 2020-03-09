@@ -4,6 +4,8 @@ onready var map := $TileMap
 
 var stops := {}
 
+onready var node_display := $CanvasLayer/Display
+
 func is_available(pos: Vector2) -> bool:
 	return map.get_cellv(pos) != TileMap.INVALID_CELL
 
@@ -14,6 +16,18 @@ func get_stop(pos: Vector2):
 	return stops[pos]
 
 func _ready():
+	node_display.hide()
 	for stop in get_tree().get_nodes_in_group("stop"):
 		var pos = Vector2(stop.grid_position_x, stop.grid_position_y)
 		stops[pos] = stop
+
+func start_move():
+	node_display.hide()
+
+func stop_at(pos: Vector2):
+	if pos in stops:
+		var stop = stops[pos]
+		if stop.has_method("get_level_title"):
+			node_display.show()
+			node_display.get_node("Title").text = stop.get_level_title()
+			node_display.get_node("Num").text = stop.get_film_text()

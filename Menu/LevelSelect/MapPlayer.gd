@@ -14,6 +14,8 @@ const SPEED := 128.0
 func _ready():
 	if Engine.editor_hint:
 		set_notify_transform(true)
+	else:
+		levelselect.call_deferred("stop_at", current_position)
 
 func _notification(what):
 	if what == NOTIFICATION_TRANSFORM_CHANGED and not ignore_tx:
@@ -43,6 +45,7 @@ func try_move_direction(dir: Vector2):
 			pos += dir
 		current_position = pos
 		is_moving = true
+		levelselect.start_move()
 
 func _physics_process(delta):
 	if not is_moving:
@@ -60,5 +63,6 @@ func _physics_process(delta):
 		if diff.length() < SPEED * delta:
 			is_moving = false
 			global_position = target
+			levelselect.stop_at(current_position)
 		else:
 			global_position += diff.normalized() * delta * SPEED

@@ -1,6 +1,6 @@
 extends RigidBody2D
 
-const TERMINAL_VELOCITY := 800
+const TERMINAL_VELOCITY := 400
 
 var is_grabbed := false
 var teleport_position = null

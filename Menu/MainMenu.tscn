@@ -4,7 +4,7 @@
 [ext_resource path="res://Ext/KenneyUI/Spritesheet/UIpackSheet_transparent.png" type="Texture" id=2]
 [ext_resource path="res://Menu/MainMenu.gd" type="Script" id=3]
 
-[sub_resource type="AtlasTexture" id=3]
+[sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 2 )
 region = Rect2( 90, 468, 16, 16 )
 
@@ -47,5 +47,5 @@ title = "File 3"
 
 [node name="Sprite" type="Sprite" parent="."]
 position = Vector2( 136, 68 )
-texture = SubResource( 3 )
+texture = SubResource( 1 )
 offset = Vector2( -8, 8 )

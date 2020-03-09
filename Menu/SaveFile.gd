@@ -23,6 +23,7 @@ func _ready():
 
 func select():
 	if should_load:
+		GameData.load_data(file_name)
 		var scene = preload("res://Menu/LevelSelect/LevelSelect.tscn")
 		var err = get_tree().change_scene_to(scene)
 		if err != OK:

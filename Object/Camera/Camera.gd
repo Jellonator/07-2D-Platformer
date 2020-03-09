@@ -1,6 +1,6 @@
 extends RigidBody2D
 
-const TERMINAL_VELOCITY := 800
+const TERMINAL_VELOCITY := 400
 
 onready var node_camera := $Node/Camera2D
 onready var node_gfx := $Gfx

@@ -14,6 +14,7 @@ func _ready():
 func collect_film(id: int):
 	node_gui.collect_film(id)
 	GameData.collect_film(unique_name, id)
+	GameData.try_autosave()
 
 func has_collected_film(id: int) -> bool:
 	return GameData.has_collected_film(unique_name, id)

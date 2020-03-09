@@ -5,6 +5,10 @@ const SECTION_FILMS := "FILM"
 var config: ConfigFile
 var file_path := ""
 
+func try_autosave():
+	if file_path != "":
+		save_data(file_path)
+
 func load_to_config(fname: String) -> ConfigFile:
 	var cfg := ConfigFile.new()
 	var err = cfg.load(fname)
@@ -52,6 +56,7 @@ func load_data(fname: String):
 	return err
 
 func save_data(fname: String):
+	print("Saving to ", fname)
 	var err = config.save(fname)
 	if err != OK:
 		push_error("Could not save data to " + fname + " [" + str(err) + "]")
@@ -69,3 +74,4 @@ func collect_film(level_name: String, film_id: int):
 	if not config.has_section_key(SECTION_FILMS, level_name):
 		config.set_value(SECTION_FILMS, level_name, {})
 	config.get_value(SECTION_FILMS, level_name)[film_id] = true
+	print(config.get_value(SECTION_FILMS, level_name))

@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Menu/LevelSelect/grid_stop.png" type="Texture" id=1]
+[ext_resource path="res://Menu/LevelSelect/MapStop.gd" type="Script" id=2]
+
+[node name="Stop" type="Node2D" groups=[
+"stop",
+]]
+position = Vector2( 96, 64 )
+script = ExtResource( 2 )
+grid_position_x = 6
+grid_position_y = 4
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 1 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 0, 0, 16, 16 )

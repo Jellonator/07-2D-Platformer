@@ -23,7 +23,7 @@ func _ready():
 
 func select():
 	if should_load:
-		pass
+		get_tree().change_scene_to(preload("res://Menu/LevelSelect/LevelSelect.tscn"))
 	else:
 		$Create.hide()
 		$Load.show()

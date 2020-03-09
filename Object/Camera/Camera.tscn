@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Object/Camera/Camera.gd" type="Script" id=1]
 [ext_resource path="res://Object/Camera/camera.png" type="Texture" id=2]
@@ -12,7 +12,7 @@ extents = Vector2( 7, 8 )
 [sub_resource type="RayShape2D" id=3]
 length = 8.0
 
-[sub_resource type="Shader" id=8]
+[sub_resource type="Shader" id=4]
 code = "shader_type canvas_item;
 
 const vec2 SIZE = vec2(400, 240);
@@ -79,20 +79,23 @@ void fragment() {
 //	COLOR.b = 1.0;
 }"
 
-[sub_resource type="ShaderMaterial" id=9]
-shader = SubResource( 8 )
-
-[sub_resource type="RectangleShape2D" id=4]
-extents = Vector2( 328, 64 )
-
-[sub_resource type="RectangleShape2D" id=5]
-extents = Vector2( 328, 64 )
+[sub_resource type="ShaderMaterial" id=5]
+shader = SubResource( 4 )
 
 [sub_resource type="RectangleShape2D" id=6]
-extents = Vector2( 64, 120 )
+extents = Vector2( 328, 64 )
 
 [sub_resource type="RectangleShape2D" id=7]
+extents = Vector2( 328, 64 )
+
+[sub_resource type="RectangleShape2D" id=8]
 extents = Vector2( 64, 120 )
+
+[sub_resource type="RectangleShape2D" id=9]
+extents = Vector2( 64, 120 )
+
+[sub_resource type="RectangleShape2D" id=10]
+extents = Vector2( 200, 120 )
 
 [node name="Camera" type="RigidBody2D" groups=[
 "grab",
@@ -130,7 +133,7 @@ smoothing_speed = 10.0
 editor_draw_screen = false
 
 [node name="Displayborder" type="Polygon2D" parent="Node/Camera2D"]
-material = SubResource( 9 )
+material = SubResource( 5 )
 z_index = -5
 texture = ExtResource( 3 )
 invert_border = 2.0
@@ -143,19 +146,26 @@ collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Node/Camera2D/StaticBody2D"]
 position = Vector2( 0, -184 )
-shape = SubResource( 4 )
+shape = SubResource( 6 )
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="Node/Camera2D/StaticBody2D"]
 position = Vector2( 0, 184 )
-shape = SubResource( 5 )
+shape = SubResource( 7 )
 
 [node name="CollisionShape2D3" type="CollisionShape2D" parent="Node/Camera2D/StaticBody2D"]
 position = Vector2( -264, 0 )
-shape = SubResource( 6 )
+shape = SubResource( 8 )
 
 [node name="CollisionShape2D4" type="CollisionShape2D" parent="Node/Camera2D/StaticBody2D"]
 position = Vector2( 264, 0 )
-shape = SubResource( 7 )
+shape = SubResource( 9 )
+
+[node name="KinematicBody2D" type="KinematicBody2D" parent="Node/Camera2D"]
+collision_layer = 512
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node/Camera2D/KinematicBody2D"]
+shape = SubResource( 10 )
 
 [node name="EditorGfx" type="Polygon2D" parent="."]
 color = Color( 0.231373, 0.470588, 0.541176, 1 )

@@ -97,3 +97,9 @@ func _on_GrabArea_body_entered(body):
 
 func _on_GrabArea_body_exited(body):
 	potential_grabs.erase(body)
+
+func do_kill():
+	var path = get_tree().current_scene.filename
+	var err = get_tree().change_scene(path)
+	if err != OK:
+		push_error("Could not kill >:( (tried to load{0} [{1}])".format([path, err]))

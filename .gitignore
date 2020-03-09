@@ -3,6 +3,9 @@
 .import/
 export.cfg
 export_presets.cfg
+*.kra~
+*.png~
+*.kra-autosave.kra
 
 # Mono-specific ignores
 .mono/

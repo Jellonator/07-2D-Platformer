@@ -33,3 +33,11 @@ func _physics_process(delta):
 		node_films.rect_position.y = clamp(node_films.rect_position.y + delta * 64.0, -16.0, 0.0)
 	else:
 		node_films.rect_position.y = clamp(node_films.rect_position.y - delta * 64.0, -16.0, 0.0)
+	if Input.is_action_just_pressed("action_restart"):
+		restart_level()
+
+func restart_level():
+	var path = get_tree().current_scene.filename
+	var err = get_tree().change_scene(path)
+	if err != OK:
+		push_error("Could not kill >:( (tried to load{0} [{1}])".format([path, err]))

@@ -16,7 +16,7 @@ func set_hbox_ground(on_ground: bool):
 	$Air.disabled = on_ground
 	$Ray1.disabled = not on_ground
 	$Ray2.disabled = not on_ground
-	$CollisionPolygon2D.disabled = not on_ground
+#	$CollisionPolygon2D.disabled = not on_ground
 
 func _ready():
 	set_hbox_ground(true)

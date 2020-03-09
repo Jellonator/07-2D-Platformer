@@ -43,7 +43,7 @@ func collect_film(id: int):
 
 func _physics_process(delta):
 	show_film_timer -= delta * 0.25
-	if show_film_timer > 0.0:
+	if show_film_timer > 0.0 or get_tree().paused:
 		node_films.rect_position.y = clamp(node_films.rect_position.y + delta * 64.0, -16.0, 0.0)
 	else:
 		node_films.rect_position.y = clamp(node_films.rect_position.y - delta * 64.0, -16.0, 0.0)

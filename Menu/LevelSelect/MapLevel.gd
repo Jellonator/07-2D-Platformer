@@ -41,3 +41,8 @@ func get_level_title() -> String:
 func get_film_text() -> String:
 	var num = GameData.count_collected_films_in_level(level_name)
 	return "{0}/{1}".format([num, num_films])
+
+func activate():
+	var err = get_tree().change_scene(level_path)
+	if err != OK:
+		push_error("Could not load level: \"{0}\" [{1}]".format(level_path, err))

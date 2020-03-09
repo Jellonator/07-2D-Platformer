@@ -57,6 +57,8 @@ func _physics_process(delta):
 			try_move_direction(Vector2.UP)
 		if Input.is_action_just_pressed("move_right"):
 			try_move_direction(Vector2.RIGHT)
+		if Input.is_action_just_pressed("action_jump"):
+			levelselect.activate_at(current_position)
 	if is_moving:
 		var target := current_position * 16
 		var diff := target - global_position

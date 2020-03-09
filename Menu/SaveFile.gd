@@ -4,7 +4,7 @@ export var file_name := ""
 export var title := ""
 
 var should_load := true
-const KNOWN_FILMS := 7
+const KNOWN_FILMS := 9
 
 func set_display():
 	var cfg = GameData.load_to_config(file_name)
@@ -23,7 +23,10 @@ func _ready():
 
 func select():
 	if should_load:
-		get_tree().change_scene_to(preload("res://Menu/LevelSelect/LevelSelect.tscn"))
+		var scene = preload("res://Menu/LevelSelect/LevelSelect.tscn")
+		var err = get_tree().change_scene_to(scene)
+		if err != OK:
+			push_error("Could not load level select [{0}]".format(err))
 	else:
 		$Create.hide()
 		$Load.show()

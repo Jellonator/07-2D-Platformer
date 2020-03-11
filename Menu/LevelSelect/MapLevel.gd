@@ -30,6 +30,11 @@ func can_move_direction(dir: Vector2):
 func _ready():
 	if Engine.editor_hint:
 		set_notify_transform(true)
+	else:
+		if GameData.is_level_completed(level_name):
+			$Sprite.frame = 0
+		else:
+			$Sprite.frame = 1
 
 func _notification(what):
 	if what == NOTIFICATION_TRANSFORM_CHANGED and not ignore_tx:

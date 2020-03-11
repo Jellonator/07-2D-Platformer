@@ -143,6 +143,7 @@ polygon = PoolVector2Array( -200, -120, 200, -120, 200, 120, -200, 120 )
 uv = PoolVector2Array( 0, 0, 64, 0, 64, 64, 0, 64 )
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Node/Camera2D"]
+visible = false
 collision_layer = 0
 collision_mask = 2
 
@@ -163,6 +164,7 @@ position = Vector2( 264, 0 )
 shape = SubResource( 9 )
 
 [node name="KinematicBody2D" type="KinematicBody2D" parent="Node/Camera2D"]
+visible = false
 collision_layer = 512
 collision_mask = 0
 

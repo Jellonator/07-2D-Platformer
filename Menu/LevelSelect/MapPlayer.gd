@@ -15,8 +15,9 @@ func _ready():
 	if Engine.editor_hint:
 		set_notify_transform(true)
 	else:
+		yield(get_tree(), "idle_frame")
 		var pos = GameData.get_overworld_position()
-		if pos != null:
+		if pos != null and levelselect.is_available_at(pos):
 			current_position = pos
 			global_position = current_position * 16
 		levelselect.call_deferred("stop_at", current_position)

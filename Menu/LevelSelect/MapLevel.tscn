@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://Menu/LevelSelect/MapLevel.gd" type="Script" id=1]
+[ext_resource path="res://Menu/LevelSelect/Tile.png" type="Texture" id=2]
 
 [node name="Level" type="Node2D" groups=[
 "stop",
@@ -10,12 +11,7 @@ script = ExtResource( 1 )
 grid_position_x = 6
 grid_position_y = 2
 
-[node name="Polygon2D" type="Polygon2D" parent="."]
-color = Color( 0.976471, 0.937255, 0.00784314, 1 )
-polygon = PoolVector2Array( 0, 0, 16, 0, 16, 16, 0, 16 )
-
-[node name="Polygon2D2" type="Polygon2D" parent="."]
-color = Color( 0.388235, 0.282353, 0, 1 )
-invert_enable = true
-invert_border = 1.0
-polygon = PoolVector2Array( 0, 0, 16, 0, 16, 16, 0, 16 )
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 2 )
+centered = false
+hframes = 2

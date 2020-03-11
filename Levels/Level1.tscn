@@ -54,7 +54,12 @@ curve = SubResource( 1 )
 [node name="Platform" parent="Path2D" instance=ExtResource( 3 )]
 position = Vector2( -32, -96 )
 speed = 32.0
+initial_node = 0
+initial_position = 0.0
+initial_direction = 0
 button_mode = 1
+button_oneshot = false
+display_graphic = true
 
 [node name="Film" parent="." instance=ExtResource( 5 )]
 position = Vector2( 248, -176 )
@@ -76,6 +81,10 @@ curve = SubResource( 2 )
 ] instance=ExtResource( 3 )]
 position = Vector2( 488, -80 )
 z_index = -100
+speed = 16.0
+initial_node = 0
+initial_position = 0.0
+initial_direction = 0
 button_mode = 3
 button_oneshot = true
 display_graphic = false

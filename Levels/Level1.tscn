@@ -93,4 +93,3 @@ tile_data = PoolIntArray( 65535, 0, 65536, 0, 0, 65537, 1, 0, 65537, 2, 0, 3, 13
 
 [node name="Button" parent="." instance=ExtResource( 8 )]
 position = Vector2( 584, -72 )
-group = "button"

@@ -12,12 +12,12 @@ func end_press():
 	get_tree().call_group(group, "do_release")
 	$Polygon2D2.scale.y = 1.0
 
-func _on_Area2D_body_entered(body):
+func _on_Area2D_body_entered(_body):
 	num += 1
 	if num == 1:
 		begin_press()
 
-func _on_Area2D_body_exited(body):
+func _on_Area2D_body_exited(_body):
 	num -= 1
 	if num == 0:
 		end_press()
@@ -26,7 +26,7 @@ func _ready():
 	if Engine.editor_hint:
 		set_physics_process(true)
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	if Engine.editor_hint:
 		update()
 

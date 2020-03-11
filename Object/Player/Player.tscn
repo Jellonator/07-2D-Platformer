@@ -17,6 +17,7 @@ extents = Vector2( 8, 11 )
 "player",
 ]]
 process_priority = 100
+z_index = 1
 collision_layer = 2
 script = ExtResource( 1 )
 

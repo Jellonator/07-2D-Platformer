@@ -98,6 +98,7 @@ extents = Vector2( 64, 120 )
 extents = Vector2( 200, 120 )
 
 [node name="Camera" type="RigidBody2D" groups=[
+"camera",
 "grab",
 ]]
 process_priority = 1
@@ -128,7 +129,6 @@ texture = ExtResource( 2 )
 
 [node name="Camera2D" type="Camera2D" parent="Node"]
 process_priority = 2
-visible = false
 current = true
 smoothing_speed = 10.0
 editor_draw_screen = false

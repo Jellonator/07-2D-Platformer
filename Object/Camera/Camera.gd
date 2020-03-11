@@ -14,6 +14,15 @@ onready var gpos := self.global_position
 # Keep track of previous position so that Camera2D can be moved
 onready var ppos := self.global_position
 
+var is_stopped := false
+
+func begin_stop():
+	is_stopped = true
+	$Node/Camera2D/StaticBody2D/CollisionShape2D.disabled = true
+	$Node/Camera2D/StaticBody2D/CollisionShape2D2.disabled = true
+	$Node/Camera2D/StaticBody2D/CollisionShape2D3.disabled = true
+	$Node/Camera2D/StaticBody2D/CollisionShape2D4.disabled = true
+
 func get_grab_priority() -> int:
 	return 1
 
@@ -51,17 +60,19 @@ func teleport_to(pos: Vector2, move_with_camera: bool, coffset: Vector2):
 		ogpos = teleport_position
 	teleport_position = pos
 	if move_with_camera:
-		node_camera.global_position += (teleport_position - ogpos)
+		if not is_stopped:
+			node_camera.global_position += (teleport_position - ogpos)
 		node_gfx.global_position = teleport_position + coffset
 
 func _physics_process(delta):
-	if not is_grabbed:
-		node_camera.position += (gpos - ppos)
-	ppos = gpos
-	var target_position = gpos
-	var diff = target_position - node_camera.position
-	var speed = (10.0 + diff.length() * 10.0) * delta
-	if diff.length() < speed:
-		node_camera.position = target_position
-	else:
-		node_camera.position += diff.normalized() * speed
+	if not is_stopped:
+		if not is_grabbed:
+			node_camera.position += (gpos - ppos)
+		ppos = gpos
+		var target_position = gpos
+		var diff = target_position - node_camera.position
+		var speed = (10.0 + diff.length() * 10.0) * delta
+		if diff.length() < speed:
+			node_camera.position = target_position
+		else:
+			node_camera.position += diff.normalized() * speed

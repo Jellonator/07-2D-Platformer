@@ -13,6 +13,10 @@ var velocity := Vector2()
 var grabbed_object = null
 var potential_grabs := []
 
+# End animation stuff
+var is_stopped := false
+var stop_anim_movement := 0.0
+
 var node_gbl
 var node_gbr
 var node_gtl
@@ -20,6 +24,17 @@ var node_gtr
 var node_face
 
 onready var node_face_sprite := $Sprite
+
+func begin_stop():
+	is_stopped = true
+
+func begin_walk_anim(value: float):
+	stop_anim_movement = value
+
+func has_camera() -> bool:
+	if grabbed_object == null:
+		return false
+	return grabbed_object.is_in_group("camera")
 
 func set_hbox_ground(on_ground: bool):
 	$Air.disabled = on_ground
@@ -78,6 +93,8 @@ func _physics_process(delta: float):
 	else:
 		velocity += Vector2(0, 1) * delta * GRAVITY
 	var move_dir := Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
+	if is_stopped:
+		move_dir = stop_anim_movement
 	if move_dir < -1e-5:
 		$Flip.scale.x = -1.0
 		$Sprite.flip_h = true
@@ -86,6 +103,8 @@ func _physics_process(delta: float):
 		$Sprite.flip_h = false
 	var target_speed := move_dir * MAX_SPEED
 	var accel := MOVE_ACCEL * delta
+	if is_stopped:
+		accel *= 0.5
 	if abs(velocity.x - target_speed) < accel:
 		velocity.x = target_speed
 	elif velocity.x < target_speed:
@@ -120,7 +139,7 @@ func _physics_process(delta: float):
 	var coffset = Vector2.ZERO
 	for node in [node_gbl, node_gbr, node_gtl, node_gtr, node_face]:
 		coffset += (node.global_position - node.target.global_position) / 5.0
-	if Input.is_action_just_pressed("action_grab"):
+	if Input.is_action_just_pressed("action_grab") and not is_stopped:
 		if grabbed_object != null:
 			grabbed_object.grab_end()
 			var veloc := Vector2.ZERO
@@ -141,7 +160,7 @@ func _physics_process(delta: float):
 		grabbed_object.teleport_to($Flip/GrabPosition.global_position, true, coffset)
 
 func _input(event):
-	if event.is_action_pressed("action_jump") and is_on_floor():
+	if event.is_action_pressed("action_jump") and is_on_floor() and not is_stopped:
 		set_hbox_ground(false)
 		if grabbed_object != null:
 			velocity.y = -JUMP_SPEED_GRAB
@@ -155,6 +174,8 @@ func _on_GrabArea_body_exited(body):
 	potential_grabs.erase(body)
 
 func do_kill():
+	if is_stopped:
+		return
 	var path = get_tree().current_scene.filename
 	var err = get_tree().change_scene(path)
 	if err != OK:

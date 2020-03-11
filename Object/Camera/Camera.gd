@@ -45,14 +45,14 @@ func grab_end():
 	$CollisionShape2D.disabled = false
 	gravity_scale = 1.0
 
-func teleport_to(pos: Vector2, move_with_camera: bool):
+func teleport_to(pos: Vector2, move_with_camera: bool, coffset: Vector2):
 	var ogpos = gpos
 	if teleport_position != null:
 		ogpos = teleport_position
 	teleport_position = pos
 	if move_with_camera:
 		node_camera.global_position += (teleport_position - ogpos)
-		node_gfx.global_position = teleport_position
+		node_gfx.global_position = teleport_position + coffset
 
 func _physics_process(delta):
 	if not is_grabbed:

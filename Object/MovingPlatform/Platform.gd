@@ -38,6 +38,7 @@ export(int, "Forward", "Backward") var initial_direction := 0
 # The button mode of this platform.
 export(ButtonMode) var button_mode := ButtonMode.IGNORE
 export(bool) var button_oneshot := false
+export(bool) var display_graphic := true
 onready var path := get_parent() as Path2D
 onready var curve := path.curve
 var dir := 1
@@ -70,6 +71,9 @@ func _ready():
 		initial_node = int(clamp(initial_node, 0, n-1))
 		editor_update_position()
 		return
+	else:
+		if not display_graphic:
+			$Polygon2D.hide()
 	current_node = initial_node
 	node_position = initial_position
 	if initial_direction == 0:

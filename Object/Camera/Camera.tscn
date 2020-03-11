@@ -104,6 +104,7 @@ process_priority = 1
 collision_layer = 40
 mode = 2
 physics_material_override = SubResource( 1 )
+continuous_cd = 2
 can_sleep = false
 script = ExtResource( 1 )
 

@@ -17,23 +17,14 @@ var node_gbl
 var node_gbr
 var node_gtl
 var node_gtr
+var node_face
+
+onready var node_face_sprite := $Sprite
 
 func set_hbox_ground(on_ground: bool):
 	$Air.disabled = on_ground
 	$Ray1.disabled = not on_ground
 	$Ray2.disabled = not on_ground
-#	$CollisionPolygon2D.disabled = not on_ground
-
-func check_joint(node: RigidBody2D):
-	pass
-#	var diff = node.position - node.original_position
-#	var target_
-#	if diff.length() > 1e-5:
-#		var target_veloc = -diff.normalized() * (diff.length() + 100)
-#		node.add_central_force(target_veloc - node.linear_velocity)
-#		node.add_central_force(-diff)
-#	if (node.position.distance_to(node.original_position) > 8.0):
-#		node.tp_to = diff.normalized() * 7.5 + node.original_position
 
 func _ready():
 	set_hbox_ground(true)
@@ -53,10 +44,15 @@ func _ready():
 	node_gbr.position = $GBR.global_position
 	node_gbr.target = $GBR
 	get_parent().call_deferred("add_child", node_gbr)
+	node_face = scene_gelatin.instance()
+	node_face.position = $GFACE.global_position
+	node_face.target = $GFACE
+	get_parent().call_deferred("add_child", node_face)
 	node_gtl.gravity_scale = 0
 	node_gtr.gravity_scale = 0
+	node_face.gravity_scale = 0
 	yield(get_tree(), "idle_frame")
-	for node in [node_gtl, node_gbl, node_gbr, node_gtr]:
+	for node in [node_gtl, node_gbl, node_gbr, node_gtr, node_face]:
 		node.pin_to(self)
 
 func _sort_grab(a, b):
@@ -84,8 +80,10 @@ func _physics_process(delta: float):
 	var move_dir := Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
 	if move_dir < -1e-5:
 		$Flip.scale.x = -1.0
+		$Sprite.flip_h = true
 	elif move_dir > 1e-5:
 		$Flip.scale.x = 1.0
+		$Sprite.flip_h = false
 	var target_speed := move_dir * MAX_SPEED
 	var accel := MOVE_ACCEL * delta
 	if abs(velocity.x - target_speed) < accel:
@@ -103,11 +101,25 @@ func _physics_process(delta: float):
 		velocity = move_and_slide(velocity, Vector2(0, -1), true, 4, 0.785398, false)
 	set_hbox_ground(is_on_floor())
 	velocity -= floorveloc
+	###### 
 	var total_accel := velocity - prev_veloc
 	for node in [node_gbl, node_gbr]:
 		node.force += total_accel * Vector2(1, -1) * delta * 150
-	for node in [node_gbl, node_gbr, node_gtl, node_gtr]:
+	node_face.force += total_accel * Vector2(1, -1) * delta * 70
+	for node in [node_gbl, node_gbr, node_gtl, node_gtr, node_face]:
 		node.force += velocity * delta * 21.0
+	var tx = $Polygon2D.global_transform
+	var tl = tx.xform_inv(node_gtl.global_position + Vector2(-2, -2))
+	var tr = tx.xform_inv(node_gtr.global_position + Vector2(2, -2))
+	var bl = tx.xform_inv(node_gbl.global_position + Vector2(-2, 2))
+	var br = tx.xform_inv(node_gbr.global_position + Vector2(2, 2))
+	node_face_sprite.offset = node_face.global_position - node_face.target.global_position
+	$Polygon2D.polygon = PoolVector2Array([tl, tr, br, bl])
+	$Polygon2D.update()
+	###### GRAB OBJECT CODE ######
+	var coffset = Vector2.ZERO
+	for node in [node_gbl, node_gbr, node_gtl, node_gtr, node_face]:
+		coffset += (node.global_position - node.target.global_position) / 5.0
 	if Input.is_action_just_pressed("action_grab"):
 		if grabbed_object != null:
 			grabbed_object.grab_end()
@@ -117,31 +129,16 @@ func _physics_process(delta: float):
 				if is_on_floor():
 					var dir = ($Flip/DropPosition.global_position - $Flip/GrabPosition.global_position).normalized()
 					veloc += dir * 60.0
-			grabbed_object.teleport_to($Flip/GrabPosition.global_position, true)
+			grabbed_object.teleport_to($Flip/GrabPosition.global_position, true, coffset)
 			grabbed_object.apply_impulse(Vector2.ZERO, veloc)
 			grabbed_object = null
 		elif potential_grabs.size() > 0:
 			if is_on_floor():
 				grabbed_object = get_best_grab()
 				grabbed_object.grab_begin()
-				grabbed_object.teleport_to($Flip/GrabPosition.global_position, false)
+				grabbed_object.teleport_to($Flip/GrabPosition.global_position, false, coffset)
 	elif grabbed_object != null:
-		grabbed_object.teleport_to($Flip/GrabPosition.global_position, true)
-	check_joint(node_gbl)
-	check_joint(node_gbr)
-	check_joint(node_gtl)
-	check_joint(node_gtr)
-	var tx = $Polygon2D.global_transform
-	var tl = tx.xform_inv(node_gtl.global_position + Vector2(-2, -2))
-	var tr = tx.xform_inv(node_gtr.global_position + Vector2(2, -2))
-	var bl = tx.xform_inv(node_gbl.global_position + Vector2(-2, 2))
-	var br = tx.xform_inv(node_gbr.global_position + Vector2(2, 2))
-#	$Polygon2D.polygon.set(0, tl)
-#	$Polygon2D.polygon.set(1, tr)
-#	$Polygon2D.polygon.set(2, br)
-#	$Polygon2D.polygon.set(3, bl)
-	$Polygon2D.polygon = PoolVector2Array([tl, tr, br, bl])
-	$Polygon2D.update()
+		grabbed_object.teleport_to($Flip/GrabPosition.global_position, true, coffset)
 
 func _input(event):
 	if event.is_action_pressed("action_jump") and is_on_floor():

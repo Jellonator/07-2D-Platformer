@@ -40,10 +40,10 @@ func grab_end():
 		shape.disabled = false
 	gravity_scale = 1.0
 
-func teleport_to(pos: Vector2, move_with_camera: bool):
+func teleport_to(pos: Vector2, move_with_camera: bool, coffset: Vector2):
 	teleport_position = pos
 	if move_with_camera:
-		node_gfx.global_position = teleport_position
+		node_gfx.global_position = teleport_position + coffset
 
 func get_grab_priority() -> int:
 	return 0

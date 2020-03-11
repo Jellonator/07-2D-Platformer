@@ -11,6 +11,21 @@ export(String) var real_name := ""
 export(String, FILE, "*.tscn") var level_path
 export(String) var level_name := ""
 export(int) var num_films := 0
+export(int, FLAGS, "Up", "Right", "Down", "Left") var block_directions := 0
+
+func can_move_direction(dir: Vector2):
+	if GameData.is_level_completed(level_name):
+		return true
+	elif dir == Vector2.UP and block_directions & 1 > 0:
+		return false
+	elif dir == Vector2.RIGHT and block_directions & 2 > 0:
+		return false
+	elif dir == Vector2.DOWN and block_directions & 4 > 0:
+		return false
+	elif dir == Vector2.LEFT and block_directions & 8 > 0:
+		return false
+	else:
+		return true
 
 func _ready():
 	if Engine.editor_hint:

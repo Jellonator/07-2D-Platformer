@@ -1,14 +1,15 @@
 extends Node
 
 const SECTION_FILMS := "FILM"
+const SECTION_OVERWORLD := "OVERWORLD"
+const SECTION_LEVEL_COMPLETED := "COMPLETED"
+
+const OVERWORLD_POSITION := "POSITION"
 
 var config: ConfigFile
 var file_path := ""
 
-func try_autosave():
-	if file_path != "":
-		save_data(file_path)
-
+###### EXTERNAL CONFIG FUNCTIONS ######
 func load_to_config(fname: String) -> ConfigFile:
 	var cfg := ConfigFile.new()
 	var err = cfg.load(fname)
@@ -35,8 +36,13 @@ func config_count_collected_films_in_level(cfg: ConfigFile, lname: String) -> in
 func count_collected_films_in_level(lname: String) -> int:
 	return config_count_collected_films_in_level(config, lname)
 
+###### FILE MANAGEMENT FUNCTIONS ######
 func _ready():
 	reset_all_data()
+
+func try_autosave():
+	if file_path != "":
+		save_data(file_path)
 
 func reset_all_data():
 	file_path = ""
@@ -62,6 +68,7 @@ func save_data(fname: String):
 		push_error("Could not save data to " + fname + " [" + str(err) + "]")
 	return err
 
+###### LOCAL CONFIG FUNCTIONS ######
 func has_collected_film(level_name: String, film_id: int) -> bool:
 	if not config.has_section(SECTION_FILMS):
 		return false
@@ -75,3 +82,20 @@ func collect_film(level_name: String, film_id: int):
 		config.set_value(SECTION_FILMS, level_name, {})
 	config.get_value(SECTION_FILMS, level_name)[film_id] = true
 	print(config.get_value(SECTION_FILMS, level_name))
+
+# May return null
+func get_overworld_position():
+	if not config.has_section_key(SECTION_OVERWORLD, OVERWORLD_POSITION):
+		return null
+	return config.get_value(SECTION_OVERWORLD, OVERWORLD_POSITION, null)
+
+func set_overworld_position(pos: Vector2):
+	config.set_value(SECTION_OVERWORLD, OVERWORLD_POSITION, pos)
+
+func is_level_completed(levelname: String):
+	if not config.has_section_key(SECTION_LEVEL_COMPLETED, levelname):
+		return false
+	return config.get_value(SECTION_LEVEL_COMPLETED, levelname)
+
+func set_level_completed(levelname: String):
+	config.set_value(SECTION_LEVEL_COMPLETED, levelname, true)

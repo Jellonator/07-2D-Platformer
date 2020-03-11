@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Levels/Level.gd" type="Script" id=1]
 [ext_resource path="res://Tiles/ground.tres" type="TileSet" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://Object/Player/Player.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Object/Crate/Crate.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Object/Film/Film.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Object/Goal/Goal.tscn" type="PackedScene" id=8]
 
 [node name="Level4" type="Node2D"]
 script = ExtResource( 1 )
@@ -62,5 +63,8 @@ position = Vector2( -16, 32 )
 level_id = 1
 
 [node name="Film2" parent="." instance=ExtResource( 7 )]
-position = Vector2( 872, -72 )
+position = Vector2( 824, -32 )
 level_id = 2
+
+[node name="Goal" parent="." instance=ExtResource( 8 )]
+position = Vector2( 864, -16 )

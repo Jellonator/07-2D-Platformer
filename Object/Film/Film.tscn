@@ -4,7 +4,7 @@
 [ext_resource path="res://Object/Film/Film.png" type="Texture" id=2]
 [ext_resource path="res://Object/Film/FilmParticle.png" type="Texture" id=3]
 
-[sub_resource type="ParticlesMaterial" id=2]
+[sub_resource type="ParticlesMaterial" id=1]
 emission_shape = 2
 emission_box_extents = Vector3( 10, 1, 1 )
 flag_disable_z = true
@@ -15,7 +15,7 @@ initial_velocity = 8.0
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
 
-[sub_resource type="RectangleShape2D" id=1]
+[sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 12, 12 )
 
 [node name="Film" type="Node2D" groups=[
@@ -28,7 +28,7 @@ show_behind_parent = true
 position = Vector2( 0, 8 )
 amount = 6
 lifetime = 2.0
-process_material = SubResource( 2 )
+process_material = SubResource( 1 )
 texture = ExtResource( 3 )
 
 [node name="Sprite" type="Sprite" parent="."]
@@ -36,14 +36,16 @@ texture = ExtResource( 2 )
 hframes = 8
 
 [node name="Area2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-shape = SubResource( 1 )
+shape = SubResource( 2 )
 
 [node name="PartFront" type="Particles2D" parent="."]
 position = Vector2( 0, 8 )
 amount = 6
 lifetime = 2.0
-process_material = SubResource( 2 )
+process_material = SubResource( 1 )
 texture = ExtResource( 3 )
 [connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]

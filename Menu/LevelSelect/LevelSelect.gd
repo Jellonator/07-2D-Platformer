@@ -6,8 +6,13 @@ var stops := {}
 
 onready var node_display := $CanvasLayer/Display
 
-func is_available(pos: Vector2) -> bool:
-	return map.get_cellv(pos) != TileMap.INVALID_CELL
+func is_available(pos: Vector2, dir: Vector2) -> bool:
+	if is_stop(pos):
+		var stop = get_stop(pos)
+		if stop.has_method("can_move_direction"):
+			if not stop.can_move_direction(dir):
+				return false
+	return map.get_cellv(pos + dir) != TileMap.INVALID_CELL
 
 func is_stop(pos: Vector2) -> bool:
 	return pos in stops

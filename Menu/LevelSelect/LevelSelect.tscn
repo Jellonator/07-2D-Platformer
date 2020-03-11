@@ -45,45 +45,52 @@ script = ExtResource( 5 )
 tile_set = SubResource( 1 )
 cell_size = Vector2( 16, 16 )
 format = 1
-tile_data = PoolIntArray( 131078, 0, 131072, 131079, 0, 131074, 131080, 0, 131074, 131081, 0, 131074, 131082, 0, 65538, 196618, 0, 65537, 262154, 0, 65537, 327690, 0, 65537, 393226, 0, 131073, 393227, 0, 131074, 393228, 0, 131074, 393229, 0, 131074, 393230, 0, 2 )
+tile_data = PoolIntArray( 262147, 0, 131072, 262148, 0, 131074, 262149, 0, 131074, 262150, 0, 131074, 262151, 0, 131074, 262152, 0, 131074, 262153, 0, 131074, 262154, 0, 65538, 327690, 0, 65537, 393226, 0, 131073, 393227, 0, 131074, 393228, 0, 131074, 393229, 0, 131074, 393230, 0, 65538, 458766, 0, 65537, 524302, 0, 1 )
 
 [node name="Level1" parent="." instance=ExtResource( 1 )]
+position = Vector2( 160, 64 )
+grid_position_x = 10
+grid_position_y = 4
 real_name = "Level 1"
 level_path = "res://Levels/Level1.tscn"
 level_name = "level1"
 num_films = 2
+block_directions = 4
 
 [node name="Level2" parent="." instance=ExtResource( 1 )]
-position = Vector2( 160, 32 )
+position = Vector2( 160, 96 )
 grid_position_x = 10
+grid_position_y = 6
 real_name = "Level 2"
 level_path = "res://Levels/Level2.tscn"
 level_name = "level2"
 num_films = 2
+block_directions = 2
 
 [node name="Level3" parent="." instance=ExtResource( 1 )]
-position = Vector2( 160, 96 )
-grid_position_x = 10
+position = Vector2( 224, 96 )
+grid_position_x = 14
 grid_position_y = 6
 real_name = "Level 3"
 level_path = "res://Levels/Level3.tscn"
 level_name = "level3"
 num_films = 3
+block_directions = 4
 
 [node name="Level4" parent="." instance=ExtResource( 1 )]
-position = Vector2( 224, 96 )
+position = Vector2( 224, 128 )
 grid_position_x = 14
-grid_position_y = 6
+grid_position_y = 8
 real_name = "Level 4"
 level_path = "res://Levels/Level4.tscn"
 level_name = "level4"
 num_films = 2
 
 [node name="Player" type="Node2D" parent="."]
-position = Vector2( 96, 32 )
+position = Vector2( 48, 64 )
 script = ExtResource( 4 )
-grid_position_x = 6
-grid_position_y = 2
+grid_position_x = 3
+grid_position_y = 4
 
 [node name="Polygon2D" type="Polygon2D" parent="Player"]
 color = Color( 0.172549, 1, 0.027451, 1 )

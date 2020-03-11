@@ -18,3 +18,9 @@ func collect_film(id: int):
 
 func has_collected_film(id: int) -> bool:
 	return GameData.has_collected_film(unique_name, id)
+
+func finish_level():
+	GameData.set_level_completed(unique_name)
+	var err = get_tree().change_scene("res://Menu/LevelSelect/LevelSelect.tscn")
+	if err != OK:
+		push_error("Could not load level select [{0}]".format([err]))

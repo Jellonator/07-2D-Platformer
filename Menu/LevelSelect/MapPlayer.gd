@@ -15,6 +15,10 @@ func _ready():
 	if Engine.editor_hint:
 		set_notify_transform(true)
 	else:
+		var pos = GameData.get_overworld_position()
+		if pos != null:
+			current_position = pos
+			global_position = current_position * 16
 		levelselect.call_deferred("stop_at", current_position)
 
 func _notification(what):
@@ -40,12 +44,13 @@ func try_move_direction(dir: Vector2):
 	if is_moving:
 		return
 	var pos := current_position + dir
-	if levelselect.is_available(pos):
-		while levelselect.is_available(pos+dir) and not levelselect.is_stop(pos):
+	if levelselect.is_available(current_position, dir):
+		while levelselect.is_available(pos, dir) and not levelselect.is_stop(pos):
 			pos += dir
 		current_position = pos
 		is_moving = true
 		levelselect.start_move()
+		GameData.set_overworld_position(current_position)
 
 func _physics_process(delta):
 	if not is_moving:

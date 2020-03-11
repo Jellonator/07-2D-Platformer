@@ -21,14 +21,17 @@ color = Color( 0.454902, 0.611765, 0.0627451, 1 )
 polygon = PoolVector2Array( -6, -16, 6, -16, 6, 8, -6, 8 )
 
 [node name="Air" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2( 0, -4 )
 shape = SubResource( 1 )
 
 [node name="Ray1" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2( -6, 4 )
 shape = SubResource( 2 )
 
 [node name="Ray2" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2( 6, 4 )
 shape = SubResource( 2 )
 
@@ -51,6 +54,19 @@ position = Vector2( 0, -4 )
 position = Vector2( 4, -4 )
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+visible = false
 polygon = PoolVector2Array( -6, -16, 6, -16, 6, 4, 0, 8, -6, 4 )
+
+[node name="GTL" type="Position2D" parent="."]
+position = Vector2( -4, -14 )
+
+[node name="GTR" type="Position2D" parent="."]
+position = Vector2( 4, -14 )
+
+[node name="GBL" type="Position2D" parent="."]
+position = Vector2( -4, 6 )
+
+[node name="GBR" type="Position2D" parent="."]
+position = Vector2( 4, 6 )
 [connection signal="body_entered" from="Flip/GrabArea" to="." method="_on_GrabArea_body_entered"]
 [connection signal="body_exited" from="Flip/GrabArea" to="." method="_on_GrabArea_body_exited"]

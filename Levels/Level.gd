@@ -21,6 +21,7 @@ func has_collected_film(id: int) -> bool:
 
 func finish_level():
 	GameData.set_level_completed(unique_name)
+	GameData.try_autosave()
 	var err = get_tree().change_scene("res://Menu/LevelSelect/LevelSelect.tscn")
 	if err != OK:
 		push_error("Could not load level select [{0}]".format([err]))

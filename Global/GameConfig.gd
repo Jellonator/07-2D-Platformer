@@ -1,5 +1,7 @@
 extends Node
 
+signal icon_changed(input_name);
+
 # Jello's cool user configuration script. Be sure to add this as a global
 # Autoload script in the project settings!
 # How to configure:
@@ -163,6 +165,7 @@ func set_keybind(name: String, event: InputEvent):
 	_save_config()
 	InputMap.action_erase_events(name)
 	InputMap.action_add_event(name, event);
+	emit_signal("icon_changed", name)
 
 # Set the value of a configuration variable.
 func set_config_value(name: String, value):
@@ -369,9 +372,13 @@ func get_event_icon(event: InputEvent) -> Texture:
 				# Handle other keys. This will generate text for both function
 				# keys and single-character keys.
 				var code := OS.get_scancode_string(ek.scancode)
-				if code.length() > 2 and ek.unicode != 0:
+				var valid_code := code.length() == 1
+				if code.length() == 2 and code.begins_with("F"):
+					valid_code = true
+				if not valid_code and (code.length() > 2 and ek.unicode != 0):
 					code = char(ek.unicode)
-				if code.length() == 2 and code.begins_with("F") or code.length() == 1:
+					valid_code = true
+				if valid_code:
 					# Determine rect
 					pos = Vector2(0, 1)
 					var rect := Rect2(pos.x*16, pos.y*16, 16, 16)
@@ -408,7 +415,7 @@ func get_event_icon(event: InputEvent) -> Texture:
 			else:
 				pos = pos_mouse_x2
 	if event is InputEventJoypadButton:
-		var name = get_event_name(event)
+		var name := get_event_name(event)
 		if name == "Face Button Top":
 			pos = pos_ctrl_btn_up
 		if name == "Face Button Left":
@@ -442,7 +449,7 @@ func get_event_icon(event: InputEvent) -> Texture:
 		if name == "Select":
 			pos = pos_ctrl_select
 	if event is InputEventJoypadMotion:
-		var name = get_event_name(event)
+		var name := get_event_name(event)
 		if name == "+L":
 			pos = pos_ctrl_l1
 		if name == "+L2":
@@ -469,3 +476,6 @@ func get_event_icon(event: InputEvent) -> Texture:
 			pos = pos_ctrl_stick_r_up
 	tex.region = Rect2(pos.x*16, pos.y*16, 16, 16)
 	return tex
+
+func get_action_icon(name: String) -> Texture:
+	return get_event_icon(InputMap.get_action_list(name)[0])

@@ -46,9 +46,6 @@ shape = SubResource( 3 )
 [node name="GrabPosition" type="Position2D" parent="Flip"]
 position = Vector2( 0, -4 )
 
-[node name="DropPosition" type="Position2D" parent="Flip"]
-position = Vector2( 4, -6 )
-
 [node name="Sprite" type="Sprite" parent="."]
 position = Vector2( 0, -4 )
 texture = ExtResource( 3 )
@@ -67,5 +64,17 @@ position = Vector2( 4, 6 )
 
 [node name="GFACE" type="Position2D" parent="."]
 position = Vector2( 0, -6 )
+
+[node name="JumpIcon" type="Sprite" parent="."]
+visible = false
+position = Vector2( 0, -24 )
+
+[node name="GrabIcon" type="Sprite" parent="."]
+visible = false
+position = Vector2( 0, -24 )
+
+[node name="RestartIcon" type="Sprite" parent="."]
+visible = false
+position = Vector2( 0, -24 )
 [connection signal="body_entered" from="Flip/GrabArea" to="." method="_on_GrabArea_body_entered"]
 [connection signal="body_exited" from="Flip/GrabArea" to="." method="_on_GrabArea_body_exited"]

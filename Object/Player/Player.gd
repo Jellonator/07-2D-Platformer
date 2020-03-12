@@ -28,6 +28,7 @@ onready var node_face_sprite := $Sprite
 
 func begin_stop():
 	is_stopped = true
+	$GrabIcon.hide()
 
 func begin_walk_anim(value: float):
 	stop_anim_movement = value
@@ -69,6 +70,20 @@ func _ready():
 	for node in [node_gtl, node_gbl, node_gbr, node_gtr, node_face]:
 		node.pin_to(self)
 		node.hide()
+	update_grab_icon("action_grab")
+	update_grab_icon("action_jump")
+	update_grab_icon("action_restart")
+# warning-ignore:return_value_discarded
+	GameConfig.connect("icon_changed", self, "update_grab_icon")
+
+func update_grab_icon(name: String):
+	match name:
+		"action_grab":
+			$GrabIcon.texture = GameConfig.get_action_icon("action_grab")
+		"action_jump":
+			$JumpIcon.texture = GameConfig.get_action_icon("action_jump")
+		"action_restart":
+			$RestartIcon.texture = GameConfig.get_action_icon("action_restart")
 
 func _sort_grab(a, b):
 	var a_priority = a.get_grab_priority()
@@ -115,9 +130,11 @@ func _physics_process(delta: float):
 	var floorveloc := get_floor_velocity() * delta
 	velocity += floorveloc
 	if is_on_floor():
-		velocity = move_and_slide_with_snap(velocity, Vector2(0, 2), Vector2(0, -1), true, 4, 0.785398, false)
+		velocity = move_and_slide_with_snap(velocity, Vector2(0, 2),\
+				Vector2(0, -1), true, 4, 0.785398, false)
 	else:
-		velocity = move_and_slide(velocity, Vector2(0, -1), true, 4, 0.785398, false)
+		velocity = move_and_slide(velocity, Vector2(0, -1),\
+				true, 4, 0.785398, false)
 	set_hbox_ground(is_on_floor())
 	velocity -= floorveloc
 	###### 
@@ -145,8 +162,6 @@ func _physics_process(delta: float):
 	$Polygon2D.update()
 	###### GRAB OBJECT CODE ######
 	var coffset = Vector2.ZERO
-#	for node in [node_gbl, node_gbr, node_gtl, node_gtr, node_face]:
-#		coffset += (node.global_position - node.target.global_position) / 5.0
 	if Input.is_action_just_pressed("action_grab") and not is_stopped:
 		if grabbed_object != null:
 			grabbed_object.grab_end()
@@ -154,8 +169,10 @@ func _physics_process(delta: float):
 			if not Input.is_action_pressed("move_down"):
 				veloc += velocity
 				if is_on_floor():
-					var dir = ($Flip/DropPosition.global_position - $Flip/GrabPosition.global_position).normalized()
-					veloc += dir * abs(veloc.x)
+					if Input.is_action_pressed("move_up"):
+						veloc += (Vector2(1, -1) * $Flip.scale).normalized() * 80
+					else:
+						veloc += (Vector2(1, -0.5) * $Flip.scale).normalized() * 60
 			grabbed_object.teleport_to($Flip/GrabPosition.global_position, true, coffset)
 			grabbed_object.apply_impulse(Vector2.ZERO, veloc)
 			grabbed_object = null
@@ -177,9 +194,13 @@ func _input(event):
 
 func _on_GrabArea_body_entered(body):
 	potential_grabs.append(body)
+	$GrabIcon.visible = (potential_grabs.size() > 0 or grabbed_object != null) and\
+			get_tree().current_scene.unique_name == "level1" and not is_stopped
 
 func _on_GrabArea_body_exited(body):
 	potential_grabs.erase(body)
+	$GrabIcon.visible = (potential_grabs.size() > 0 or grabbed_object != null) and\
+			get_tree().current_scene.unique_name == "level1" and not is_stopped
 
 func do_kill():
 	if is_stopped:
@@ -188,3 +209,15 @@ func do_kill():
 	var err = get_tree().change_scene(path)
 	if err != OK:
 		push_error("Could not kill >:( (tried to load{0} [{1}])".format([path, err]))
+
+func show_jump_icon():
+	$JumpIcon.show()
+
+func hide_jump_icon():
+	$JumpIcon.hide()
+
+func show_restart_icon():
+	$RestartIcon.show()
+
+func hide_restart_icon():
+	$RestartIcon.hide()

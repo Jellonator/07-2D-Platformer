@@ -258,17 +258,22 @@ const pos_ctrl_btn_up := Vector2(0, 0)
 const pos_ctrl_btn_left := Vector2(1, 0)
 const pos_ctrl_btn_down := Vector2(2, 0)
 const pos_ctrl_btn_right := Vector2(3, 0)
-const pos_ctrl_stick_up := Vector2(4, 0)
-const pos_ctrl_stick_left := Vector2(5, 0)
-const pos_ctrl_stick_down := Vector2(6, 0)
-const pos_ctrl_stick_right := Vector2(7, 0)
+const pos_ctrl_stick_l_up := Vector2(4, 0)
+const pos_ctrl_stick_l_left := Vector2(5, 0)
+const pos_ctrl_stick_l_down := Vector2(6, 0)
+const pos_ctrl_stick_l_right := Vector2(7, 0)
+const pos_ctrl_stick_l_press := Vector2(6, 3)
+const pos_ctrl_stick_r_up := Vector2(4, 5)
+const pos_ctrl_stick_r_left := Vector2(5, 5)
+const pos_ctrl_stick_r_down := Vector2(6, 5)
+const pos_ctrl_stick_r_right := Vector2(7, 5)
+const pos_ctrl_stick_r_press := Vector2(7, 3)
 const pos_ctrl_pad_up := Vector2(0, 3)
 const pos_ctrl_pad_left := Vector2(1, 3)
 const pos_ctrl_pad_down := Vector2(2, 3)
 const pos_ctrl_pad_right := Vector2(3, 3)
 const pos_ctrl_select := Vector2(4, 3)
 const pos_ctrl_start := Vector2(5, 3)
-const pos_ctrl_stick_press := Vector2(6, 3)
 const pos_ctrl_l1 := Vector2(0, 5)
 const pos_ctrl_l2 := Vector2(1, 5)
 const pos_ctrl_r1 := Vector2(2, 5)
@@ -293,6 +298,8 @@ const pos_mouse_x1 := Vector2(4, 4)
 const pos_mouse_x2 := Vector2(5, 4)
 const pos_mouse_wheel_up := Vector2(6, 4)
 const pos_mouse_wheel_down := Vector2(7, 4)
+const pos_mouse_wheel_left := Vector2(0, 6)
+const pos_mouse_wheel_right := Vector2(1, 6)
 const pos_mouse_unknown := Vector2(3, 4)
 
 # Unfortunately, you can not draw a font directly to a texture. Instead, you
@@ -391,10 +398,11 @@ func get_event_icon(event: InputEvent) -> Texture:
 		elif emb.button_index == BUTTON_WHEEL_UP:
 			pos = pos_mouse_wheel_up
 		elif emb.button_index == BUTTON_WHEEL_LEFT:
-			pos = pos_mouse_unknown
+			pos = pos_mouse_wheel_left
 		elif emb.button_index == BUTTON_WHEEL_RIGHT:
-			pos = pos_mouse_unknown
+			pos = pos_mouse_wheel_right
 		else:
+			# Close enough
 			if emb.button_index % 2 == 1:
 				pos = pos_mouse_x1
 			else:
@@ -426,9 +434,9 @@ func get_event_icon(event: InputEvent) -> Texture:
 		if name == "R2":
 			pos = pos_ctrl_r2
 		if name == "L3":
-			pos = pos_ctrl_stick_press
+			pos = pos_ctrl_stick_l_press
 		if name == "R3":
-			pos = pos_ctrl_stick_press
+			pos = pos_ctrl_stick_r_press
 		if name == "Start":
 			pos = pos_ctrl_start
 		if name == "Select":
@@ -444,20 +452,20 @@ func get_event_icon(event: InputEvent) -> Texture:
 		if name == "+R2":
 			pos = pos_ctrl_r2
 		if name == "+Left Stick X":
-			pos = pos_ctrl_stick_right
+			pos = pos_ctrl_stick_l_right
 		if name == "-Left Stick X":
-			pos = pos_ctrl_stick_left
+			pos = pos_ctrl_stick_l_left
 		if name == "+Left Stick Y":
-			pos = pos_ctrl_stick_down
+			pos = pos_ctrl_stick_l_down
 		if name == "-Left Stick Y":
-			pos = pos_ctrl_stick_up
+			pos = pos_ctrl_stick_l_up
 		if name == "+Right Stick X":
-			pos = pos_ctrl_stick_right
+			pos = pos_ctrl_stick_r_right
 		if name == "-Right Stick X":
-			pos = pos_ctrl_stick_left
+			pos = pos_ctrl_stick_r_left
 		if name == "+Right Stick Y":
-			pos = pos_ctrl_stick_down
+			pos = pos_ctrl_stick_r_down
 		if name == "-Right Stick Y":
-			pos = pos_ctrl_stick_up
+			pos = pos_ctrl_stick_r_up
 	tex.region = Rect2(pos.x*16, pos.y*16, 16, 16)
 	return tex

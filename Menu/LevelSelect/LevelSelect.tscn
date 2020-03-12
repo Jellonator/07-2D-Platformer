@@ -125,11 +125,11 @@ color = Color( 0.172549, 1, 0.027451, 1 )
 polygon = PoolVector2Array( 2, 12, 2, -8, 14, -8, 14, 12 )
 
 [node name="Sprite" type="Sprite" parent="Player"]
-position = Vector2( 8, 2 )
+position = Vector2( 8, 1 )
 texture = ExtResource( 3 )
 
 [node name="Sprite2" type="Sprite" parent="Player"]
-position = Vector2( 8, 2 )
+position = Vector2( 8, 1 )
 texture = ExtResource( 10 )
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]

@@ -12,6 +12,7 @@ const JUMP_SPEED_GRAB := 210.0
 var velocity := Vector2()
 var grabbed_object = null
 var potential_grabs := []
+var walk_timer := 0.0
 
 # End animation stuff
 var is_stopped := false
@@ -38,8 +39,6 @@ func has_camera() -> bool:
 
 func set_hbox_ground(on_ground: bool):
 	$Air.disabled = on_ground
-	$Ray1.disabled = not on_ground
-	$Ray2.disabled = not on_ground
 
 func _ready():
 	set_hbox_ground(true)
@@ -69,6 +68,7 @@ func _ready():
 	yield(get_tree(), "idle_frame")
 	for node in [node_gtl, node_gbl, node_gbr, node_gtr, node_face]:
 		node.pin_to(self)
+		node.hide()
 
 func _sort_grab(a, b):
 	var a_priority = a.get_grab_priority()
@@ -121,6 +121,14 @@ func _physics_process(delta: float):
 	set_hbox_ground(is_on_floor())
 	velocity -= floorveloc
 	###### 
+	if is_on_floor():
+		var old_walk_timer := walk_timer
+		walk_timer += delta * abs(velocity.x) * 0.05
+		if old_walk_timer < 0.5 and walk_timer >= 0.5:
+			node_gbl.force += Vector2(0, -80)
+		if old_walk_timer < 1.0 and walk_timer >= 1.0:
+			walk_timer = 0.0
+			node_gbr.force += Vector2(0, -80)
 	var total_accel := velocity - prev_veloc
 	for node in [node_gbl, node_gbr]:
 		node.force += total_accel * Vector2(1, -1) * delta * 150
@@ -137,8 +145,8 @@ func _physics_process(delta: float):
 	$Polygon2D.update()
 	###### GRAB OBJECT CODE ######
 	var coffset = Vector2.ZERO
-	for node in [node_gbl, node_gbr, node_gtl, node_gtr, node_face]:
-		coffset += (node.global_position - node.target.global_position) / 5.0
+#	for node in [node_gbl, node_gbr, node_gtl, node_gtr, node_face]:
+#		coffset += (node.global_position - node.target.global_position) / 5.0
 	if Input.is_action_just_pressed("action_grab") and not is_stopped:
 		if grabbed_object != null:
 			grabbed_object.grab_end()
@@ -147,7 +155,7 @@ func _physics_process(delta: float):
 				veloc += velocity
 				if is_on_floor():
 					var dir = ($Flip/DropPosition.global_position - $Flip/GrabPosition.global_position).normalized()
-					veloc += dir * 60.0
+					veloc += dir * abs(veloc.x)
 			grabbed_object.teleport_to($Flip/GrabPosition.global_position, true, coffset)
 			grabbed_object.apply_impulse(Vector2.ZERO, veloc)
 			grabbed_object = null

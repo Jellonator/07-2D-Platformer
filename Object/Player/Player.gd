@@ -43,6 +43,11 @@ func set_hbox_ground(on_ground: bool):
 
 func _ready():
 	set_hbox_ground(true)
+	update_grab_icon("action_grab")
+	update_grab_icon("action_jump")
+	update_grab_icon("action_restart")
+# warning-ignore:return_value_discarded
+	GameConfig.connect("icon_changed", self, "update_grab_icon")
 	node_gtl = scene_gelatin.instance()
 	node_gtl.position = $GTL.global_position
 	node_gtl.target = $GTL
@@ -70,11 +75,6 @@ func _ready():
 	for node in [node_gtl, node_gbl, node_gbr, node_gtr, node_face]:
 		node.pin_to(self)
 		node.hide()
-	update_grab_icon("action_grab")
-	update_grab_icon("action_jump")
-	update_grab_icon("action_restart")
-# warning-ignore:return_value_discarded
-	GameConfig.connect("icon_changed", self, "update_grab_icon")
 
 func update_grab_icon(name: String):
 	match name:
@@ -168,6 +168,7 @@ func _physics_process(delta: float):
 			var veloc := Vector2.ZERO
 			if not Input.is_action_pressed("move_down"):
 				veloc += velocity
+				veloc.x = $Flip.scale.x * MAX_SPEED
 				if is_on_floor():
 					if Input.is_action_pressed("move_up"):
 						veloc += (Vector2(1, -1) * $Flip.scale).normalized() * 80

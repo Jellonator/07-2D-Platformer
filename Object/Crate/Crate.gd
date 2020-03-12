@@ -47,3 +47,6 @@ func teleport_to(pos: Vector2, move_with_camera: bool, coffset: Vector2):
 
 func get_grab_priority() -> int:
 	return 0
+
+func do_crush():
+	queue_free()

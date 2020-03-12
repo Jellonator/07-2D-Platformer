@@ -4,7 +4,7 @@
 [ext_resource path="res://Object/Film/Film.png" type="Texture" id=2]
 [ext_resource path="res://Object/Film/FilmParticle.png" type="Texture" id=3]
 
-[sub_resource type="ParticlesMaterial" id=3]
+[sub_resource type="ParticlesMaterial" id=1]
 emission_shape = 2
 emission_box_extents = Vector3( 10, 1, 1 )
 flag_disable_z = true
@@ -29,7 +29,8 @@ show_behind_parent = true
 position = Vector2( 0, 8 )
 amount = 6
 lifetime = 2.0
-process_material = SubResource( 3 )
+local_coords = false
+process_material = SubResource( 1 )
 texture = ExtResource( 3 )
 
 [node name="Sprite" type="Sprite" parent="."]
@@ -47,6 +48,7 @@ shape = SubResource( 2 )
 position = Vector2( 0, 8 )
 amount = 6
 lifetime = 2.0
-process_material = SubResource( 3 )
+local_coords = false
+process_material = SubResource( 1 )
 texture = ExtResource( 3 )
 [connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]

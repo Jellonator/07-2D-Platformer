@@ -9,7 +9,9 @@ var is_moving := false
 onready var current_position := Vector2(grid_position_x, grid_position_y)
 onready var levelselect = get_parent()
 
-const SPEED := 128.0
+# The walking sound is 0.36 seconds long. This will play the audio stream once
+# For every 2 tiles.
+const SPEED := 2.0 * 16.0 / 0.355
 
 func _ready():
 	if Engine.editor_hint:
@@ -52,6 +54,7 @@ func try_move_direction(dir: Vector2):
 		is_moving = true
 		levelselect.start_move()
 		GameData.set_overworld_position(current_position)
+		$SndWalk.play()
 
 func _physics_process(delta):
 	if not is_moving:
@@ -74,3 +77,7 @@ func _physics_process(delta):
 			levelselect.stop_at(current_position)
 		else:
 			global_position += diff.normalized() * delta * SPEED
+
+func _on_SndWalk_finished():
+	if is_moving:
+		$SndWalk.play()

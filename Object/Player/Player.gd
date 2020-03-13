@@ -13,6 +13,8 @@ var velocity := Vector2()
 var grabbed_object = null
 var potential_grabs := []
 var walk_timer := 0.0
+var timer_ground := 0.0
+var timer_air := 0.0
 
 # End animation stuff
 var is_stopped := false
@@ -98,6 +100,12 @@ func get_best_grab():
 	return potential_grabs[0]
 
 func _physics_process(delta: float):
+	if is_on_floor():
+		timer_air = 0
+		timer_ground += delta
+	else:
+		timer_ground = 0
+		timer_air += delta
 	var prev_veloc := velocity
 	if not is_on_floor():
 		if velocity.y < 0 and not Input.is_action_pressed("action_jump"):
@@ -137,18 +145,17 @@ func _physics_process(delta: float):
 	velocity -= floorveloc
 	###### 
 	if is_on_floor():
+		if timer_air > 5.0 / 60.0:
+			$SfxLand.play()
 		walk_timer += delta * velocity.x * 0.04
 		var arot := Vector2(1, 0).rotated(walk_timer*PI*2)
 		var brot := Vector2(-1, 0).rotated(walk_timer*PI*2)
 		node_gbl.force += arot * velocity.length() * 0.3
 		node_gbr.force += brot * velocity.length() * 0.3
-#		if old_walk_timer < 0.5 and walk_timer >= 0.5:
-#			node_gbl.force += Vector2(0, -80)
 		if walk_timer > 1.0:
 			walk_timer = 0.0
 		if walk_timer < 0.0:
 			walk_timer = 1.0
-#			node_gbr.force += Vector2(0, -80)
 	var total_accel := velocity - prev_veloc
 	for node in [node_gbl, node_gbr]:
 		node.force += total_accel * Vector2(1, -1) * delta * 150
@@ -166,6 +173,7 @@ func _physics_process(delta: float):
 		$Polygon2D.update()
 	###### GRAB OBJECT CODE ######
 	var coffset = Vector2.ZERO
+	var topos = $Flip/GrabPosition.global_position
 	if Input.is_action_just_pressed("action_grab") and not is_stopped:
 		if grabbed_object != null:
 			grabbed_object.grab_end()
@@ -178,16 +186,16 @@ func _physics_process(delta: float):
 				if not is_on_floor():
 					veloc.y = 0
 				veloc += velocity
-			grabbed_object.teleport_to($Flip/GrabPosition.global_position, true, coffset)
+			grabbed_object.teleport_to(topos, true, coffset)
 			grabbed_object.apply_central_impulse(veloc)
 			grabbed_object = null
 		elif potential_grabs.size() > 0:
 			if is_on_floor():
 				grabbed_object = get_best_grab()
 				grabbed_object.grab_begin()
-				grabbed_object.teleport_to($Flip/GrabPosition.global_position, false, coffset)
+				grabbed_object.teleport_to(topos, false, coffset)
 	elif grabbed_object != null:
-		grabbed_object.teleport_to($Flip/GrabPosition.global_position, true, coffset)
+		grabbed_object.teleport_to(topos, true, coffset)
 
 func _input(event):
 	if event.is_action_pressed("action_jump") and is_on_floor() and not is_stopped:
@@ -195,6 +203,7 @@ func _input(event):
 			velocity.y = -JUMP_SPEED_GRAB
 		else:
 			velocity.y = -JUMP_SPEED
+		$SfxJump.play()
 
 func _on_GrabArea_body_entered(body):
 	potential_grabs.append(body)

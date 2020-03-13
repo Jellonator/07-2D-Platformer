@@ -1,8 +1,10 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Object/Film/Film.gd" type="Script" id=1]
 [ext_resource path="res://Object/Film/Film.png" type="Texture" id=2]
 [ext_resource path="res://Object/Film/FilmParticle.png" type="Texture" id=3]
+[ext_resource path="res://Ext/EssentialRetro/sfx_sounds_fanfare3.wav" type="AudioStream" id=4]
+[ext_resource path="res://Ext/EssentialRetro/sfx_menu_select4.wav" type="AudioStream" id=5]
 
 [sub_resource type="ParticlesMaterial" id=1]
 emission_shape = 2
@@ -17,6 +19,48 @@ orbit_velocity_random = 0.0
 
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 12, 12 )
+
+[sub_resource type="Shader" id=3]
+code = "shader_type canvas_item;
+
+uniform vec4 color_add : hint_color = vec4(0.0, 0.0, 0.0, 1.0);
+
+void fragment() {
+	COLOR = texture(TEXTURE, UV);
+	COLOR.rgb = clamp(COLOR.rgb + color_add.rgb, 0.0, 1.0);
+}"
+
+[sub_resource type="ShaderMaterial" id=4]
+shader = SubResource( 3 )
+shader_param/color_add = Color( 0, 0, 0, 1 )
+
+[sub_resource type="Animation" id=5]
+resource_name = "Anim"
+length = 10.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:material:shader_param/color_add")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 0, 0, 0, 1 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
 
 [node name="Film" type="Node2D" groups=[
 "film",
@@ -33,16 +77,17 @@ local_coords = false
 process_material = SubResource( 1 )
 texture = ExtResource( 3 )
 
-[node name="Sprite" type="Sprite" parent="."]
-texture = ExtResource( 2 )
-hframes = 8
-
 [node name="Area2D" type="Area2D" parent="."]
 collision_layer = 0
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource( 2 )
+
+[node name="Sprite" type="Sprite" parent="."]
+material = SubResource( 4 )
+texture = ExtResource( 2 )
+hframes = 8
 
 [node name="PartFront" type="Particles2D" parent="."]
 position = Vector2( 0, 8 )
@@ -51,4 +96,17 @@ lifetime = 2.0
 local_coords = false
 process_material = SubResource( 1 )
 texture = ExtResource( 3 )
+
+[node name="SndTouch" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 4 )
+bus = "Sound"
+
+[node name="SndCollect" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 5 )
+bus = "Sound"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+playback_speed = 2.0
+anims/Anim = SubResource( 5 )
 [connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]

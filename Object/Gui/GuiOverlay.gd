@@ -65,6 +65,10 @@ func _physics_process(delta):
 	else:
 		node_films.rect_position.y = clamp(node_films.rect_position.y - delta * 64.0, -16.0, 0.0)
 	if Input.is_action_just_pressed("action_pause"):
+		if get_tree().paused:
+			$SfxUnpause.play()
+		else:
+			$SfxPause.play()
 		get_tree().paused = not get_tree().paused
 		select_i = 0
 		$Select.visible = get_tree().paused
@@ -73,14 +77,17 @@ func _physics_process(delta):
 	if get_tree().paused:
 		if Input.is_action_just_pressed("move_up"):
 			select_i = posmod(select_i - 1, selections.size())
+			$SfxMove.play()
 			update_selection()
 		if Input.is_action_just_pressed("move_down"):
 			select_i = posmod(select_i + 1, selections.size())
+			$SfxMove.play()
 			update_selection()
 		if Input.is_action_just_pressed("action_jump"):
 			match selections[select_i].action:
 				Action.CONTINUE:
 					get_tree().paused = false
+					$SfxUnpause.play()
 				Action.RESTART:
 					get_tree().paused = false
 					restart_level()

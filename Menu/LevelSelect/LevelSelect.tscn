@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://Menu/LevelSelect/MapLevel.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Menu/LevelSelect/grid.png" type="Texture" id=2]
@@ -13,6 +13,7 @@
 [ext_resource path="res://Tiles/overworld.png" type="Texture" id=11]
 [ext_resource path="res://Menu/LevelSelect/MapStop.tscn" type="PackedScene" id=12]
 [ext_resource path="res://Object/Gui/GuiOverlay.tscn" type="PackedScene" id=13]
+[ext_resource path="res://Ext/EssentialRetro/sfx_movement_footstepsloop4_fast.wav" type="AudioStream" id=14]
 
 [sub_resource type="TileSet" id=1]
 0/name = "grid"
@@ -151,6 +152,10 @@ texture = ExtResource( 3 )
 position = Vector2( 8, 1 )
 texture = ExtResource( 10 )
 
+[node name="SndWalk" type="AudioStreamPlayer" parent="Player"]
+stream = ExtResource( 14 )
+bus = "Sound"
+
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="Display" type="Control" parent="CanvasLayer"]
@@ -225,3 +230,4 @@ grid_position_y = 8
 
 [node name="GuiOverlay" parent="." instance=ExtResource( 13 )]
 is_level_select = true
+[connection signal="finished" from="Player/SndWalk" to="Player" method="_on_SndWalk_finished"]

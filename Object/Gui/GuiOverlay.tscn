@@ -1,8 +1,11 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Object/Gui/GuiOverlay.gd" type="Script" id=1]
 [ext_resource path="res://Ext/KenneyFont/Fonts/Kenney Pixel.ttf" type="DynamicFontData" id=2]
 [ext_resource path="res://Ext/KenneyUI/Spritesheet/UIpackSheet_transparent.png" type="Texture" id=3]
+[ext_resource path="res://Ext/EssentialRetro/sfx_sounds_pause1_out.wav" type="AudioStream" id=4]
+[ext_resource path="res://Ext/EssentialRetro/sfx_menu_move4.wav" type="AudioStream" id=5]
+[ext_resource path="res://Ext/EssentialRetro/sfx_sounds_pause1_in.wav" type="AudioStream" id=6]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.752941, 0.796078, 0.862745, 1 )
@@ -87,3 +90,15 @@ visible = false
 position = Vector2( 178, 98 )
 texture = SubResource( 3 )
 offset = Vector2( -8, 8 )
+
+[node name="SfxPause" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
+bus = "Sound"
+
+[node name="SfxMove" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 5 )
+bus = "Sound"
+
+[node name="SfxUnpause" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )
+bus = "Sound"

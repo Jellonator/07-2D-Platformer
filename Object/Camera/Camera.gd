@@ -29,7 +29,6 @@ func get_grab_priority() -> int:
 func _ready():
 	$Node/Camera2D.show()
 	node_camera.global_position = global_position
-	custom_integrator = true
 	$EditorGfx.queue_free()
 
 func _integrate_forces(state: Physics2DDirectBodyState):
@@ -37,7 +36,12 @@ func _integrate_forces(state: Physics2DDirectBodyState):
 		state.transform.origin = teleport_position
 		teleport_position = null
 		node_gfx.position = Vector2.ZERO
-	state.integrate_forces()
+	var vx = state.linear_velocity.x
+	if vx > 0:
+		vx = max(0.0, vx - state.step * 25.0)
+	else:
+		vx = min(0.0, vx + state.step * 25.0)
+	state.linear_velocity.x = vx
 	if is_grabbed:
 		state.linear_velocity = Vector2.ZERO
 	if state.linear_velocity.y > TERMINAL_VELOCITY:

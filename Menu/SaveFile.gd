@@ -4,7 +4,7 @@ export var file_name := ""
 export var title := ""
 
 var should_load := true
-const KNOWN_FILMS := 9
+const KNOWN_FILMS := 10
 
 func set_display():
 	var cfg = GameData.load_to_config(file_name)

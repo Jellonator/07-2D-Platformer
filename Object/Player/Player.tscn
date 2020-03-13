@@ -1,11 +1,8 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Object/Player/Player.gd" type="Script" id=1]
 [ext_resource path="res://Object/Player/Gelatina/BG.PNG" type="Texture" id=2]
 [ext_resource path="res://Object/Player/Gelatina/Layer 1.PNG" type="Texture" id=3]
-
-[sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 6, 11 )
 
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 8, 8 )
@@ -23,13 +20,8 @@ texture = ExtResource( 2 )
 polygon = PoolVector2Array( -6, -16, 6, -16, 6, 8, -6, 8 )
 uv = PoolVector2Array( 0, 0, 12, 0, 12, 24, 0, 24 )
 
-[node name="Air" type="CollisionShape2D" parent="."]
-visible = false
-position = Vector2( 0, -4 )
-shape = SubResource( 1 )
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
-polygon = PoolVector2Array( -6, -16, 6, -16, 6, 6, 4, 8, -4, 8, -6, 6 )
+[node name="Ground" type="CollisionPolygon2D" parent="."]
+polygon = PoolVector2Array( -6, -16, 6, -16, 6, 6, 2, 8, -2, 8, -6, 6 )
 
 [node name="Flip" type="Node2D" parent="."]
 

@@ -38,11 +38,7 @@ func has_camera() -> bool:
 		return false
 	return grabbed_object.is_in_group("camera")
 
-func set_hbox_ground(on_ground: bool):
-	$Air.disabled = on_ground
-
 func _ready():
-	set_hbox_ground(true)
 	update_grab_icon("action_grab")
 	update_grab_icon("action_jump")
 	update_grab_icon("action_restart")
@@ -103,10 +99,13 @@ func get_best_grab():
 
 func _physics_process(delta: float):
 	var prev_veloc := velocity
-	if velocity.y < 0 and not Input.is_action_pressed("action_jump"):
-		velocity += Vector2(0, 1) * delta * GRAVITY_FALL
+	if not is_on_floor():
+		if velocity.y < 0 and not Input.is_action_pressed("action_jump"):
+			velocity += Vector2(0, 1) * delta * GRAVITY_FALL
+		else:
+			velocity += Vector2(0, 1) * delta * GRAVITY
 	else:
-		velocity += Vector2(0, 1) * delta * GRAVITY
+		velocity += Vector2(0, 1) * delta * 100.0
 	var move_dir := Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
 	if is_stopped:
 		move_dir = stop_anim_movement
@@ -135,17 +134,22 @@ func _physics_process(delta: float):
 	else:
 		velocity = move_and_slide(velocity, Vector2(0, -1),\
 				true, 4, 0.785398, false)
-	set_hbox_ground(is_on_floor())
 	velocity -= floorveloc
 	###### 
 	if is_on_floor():
 		var old_walk_timer := walk_timer
-		walk_timer += delta * abs(velocity.x) * 0.05
-		if old_walk_timer < 0.5 and walk_timer >= 0.5:
-			node_gbl.force += Vector2(0, -80)
-		if old_walk_timer < 1.0 and walk_timer >= 1.0:
+		walk_timer += delta * velocity.x * 0.04
+		var arot := Vector2(1, 0).rotated(walk_timer*PI*2)
+		var brot := Vector2(-1, 0).rotated(walk_timer*PI*2)
+		node_gbl.force += arot * velocity.length() * 0.3
+		node_gbr.force += brot * velocity.length() * 0.3
+#		if old_walk_timer < 0.5 and walk_timer >= 0.5:
+#			node_gbl.force += Vector2(0, -80)
+		if walk_timer > 1.0:
 			walk_timer = 0.0
-			node_gbr.force += Vector2(0, -80)
+		if walk_timer < 0.0:
+			walk_timer = 1.0
+#			node_gbr.force += Vector2(0, -80)
 	var total_accel := velocity - prev_veloc
 	for node in [node_gbl, node_gbr]:
 		node.force += total_accel * Vector2(1, -1) * delta * 150
@@ -167,15 +171,15 @@ func _physics_process(delta: float):
 			grabbed_object.grab_end()
 			var veloc := Vector2.ZERO
 			if not Input.is_action_pressed("move_down"):
+				if Input.is_action_pressed("move_up"):
+					veloc += (Vector2(1, -2) * $Flip.scale).normalized() * 120
+				else:
+					veloc += (Vector2(1, -1) * $Flip.scale).normalized() * 100
+				if not is_on_floor():
+					veloc.y = 0
 				veloc += velocity
-				veloc.x = $Flip.scale.x * MAX_SPEED
-				if is_on_floor():
-					if Input.is_action_pressed("move_up"):
-						veloc += (Vector2(1, -1) * $Flip.scale).normalized() * 80
-					else:
-						veloc += (Vector2(1, -0.5) * $Flip.scale).normalized() * 60
 			grabbed_object.teleport_to($Flip/GrabPosition.global_position, true, coffset)
-			grabbed_object.apply_impulse(Vector2.ZERO, veloc)
+			grabbed_object.apply_central_impulse(veloc)
 			grabbed_object = null
 		elif potential_grabs.size() > 0:
 			if is_on_floor():
@@ -187,7 +191,6 @@ func _physics_process(delta: float):
 
 func _input(event):
 	if event.is_action_pressed("action_jump") and is_on_floor() and not is_stopped:
-		set_hbox_ground(false)
 		if grabbed_object != null:
 			velocity.y = -JUMP_SPEED_GRAB
 		else:

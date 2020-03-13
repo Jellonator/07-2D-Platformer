@@ -6,19 +6,36 @@ onready var node_films := $Films
 
 var show_film_timer := 0.0
 
+enum Action {CONTINUE, RESTART, EXIT}
+
+class Selection:
+	var node
+	var action
+	func _init(p_node, p_action):
+		self.node = p_node
+		self.action = p_action
+
 onready var select_i := 0
 onready var selections := [
-	$Select/Panel/VBox/Continue,
-	$Select/Panel/VBox/Restart,
-	$Select/Panel/VBox/Exit
+	Selection.new($Select/Panel/VBox/Continue, Action.CONTINUE),
+	Selection.new($Select/Panel/VBox/Restart, Action.RESTART),
+	Selection.new($Select/Panel/VBox/Exit, Action.EXIT)
 ]
 
 onready var node_cursor := $Sprite
 
+export var is_level_select := false
+
 func update_selection():
-	node_cursor.global_position = selections[select_i].rect_global_position
+	node_cursor.global_position = selections[select_i].node.rect_global_position
 
 func _ready():
+	if is_level_select:
+		node_films.hide()
+		selections[1].node.queue_free()
+		selections.remove(1)
+	else:
+		node_films.show()
 	$Select.visible = get_tree().paused
 	$Sprite.visible = get_tree().paused
 	show_film_timer = 1.0
@@ -55,24 +72,28 @@ func _physics_process(delta):
 		call_deferred("update_selection")
 	if get_tree().paused:
 		if Input.is_action_just_pressed("move_up"):
-			select_i = (select_i - 1) % selections.size()
+			select_i = posmod(select_i - 1, selections.size())
 			update_selection()
 		if Input.is_action_just_pressed("move_down"):
-			select_i = (select_i + 1) % selections.size()
+			select_i = posmod(select_i + 1, selections.size())
 			update_selection()
 		if Input.is_action_just_pressed("action_jump"):
-			if select_i == 0:
-				get_tree().paused = false
-			elif select_i == 1:
-				get_tree().paused = false
-				restart_level()
-				return
-			elif select_i == 2:
-				get_tree().paused = false
-				var err = get_tree().change_scene("res://Menu/LevelSelect/LevelSelect.tscn")
-				if err != OK:
-					push_error("Could not load level select [{0}]".format([err]))
-				return
+			match selections[select_i].action:
+				Action.CONTINUE:
+					get_tree().paused = false
+				Action.RESTART:
+					get_tree().paused = false
+					restart_level()
+					return
+				Action.EXIT:
+					get_tree().paused = false
+					var scene = "res://Menu/LevelSelect/LevelSelect.tscn"
+					if is_level_select:
+						scene = "res://Menu/MainMenu.tscn"
+					var err = get_tree().change_scene(scene)
+					if err != OK:
+						push_error("Could not load level select [{0}]".format([err]))
+					return
 	if Input.is_action_just_pressed("action_restart"):
 		get_tree().paused = false
 		restart_level()

@@ -19,9 +19,9 @@ func _ready():
 
 func _input(event):
 	if event.is_action_pressed("move_down"):
-		self.selected_file = (self.selected_file + 1) % files.size()
+		self.selected_file = posmod(self.selected_file + 1, files.size())
 	elif event.is_action_pressed("move_up"):
-		self.selected_file = (self.selected_file - 1) % files.size()
+		self.selected_file = posmod(self.selected_file - 1, files.size())
 	elif event.is_action_pressed("action_jump"):
 		files[self.selected_file].select()
 	elif event.is_action_pressed("action_grab"):

@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://Menu/LevelSelect/MapLevel.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Menu/LevelSelect/grid.png" type="Texture" id=2]
@@ -12,6 +12,7 @@
 [ext_resource path="res://Object/Player/Gelatina/Layer 1.PNG" type="Texture" id=10]
 [ext_resource path="res://Tiles/overworld.png" type="Texture" id=11]
 [ext_resource path="res://Menu/LevelSelect/MapStop.tscn" type="PackedScene" id=12]
+[ext_resource path="res://Object/Gui/GuiOverlay.tscn" type="PackedScene" id=13]
 
 [sub_resource type="TileSet" id=1]
 0/name = "grid"
@@ -34,7 +35,7 @@
 0/shapes = [  ]
 0/z_index = 0
 
-[sub_resource type="TileSet" id=4]
+[sub_resource type="TileSet" id=2]
 0/name = "overworld.png 0"
 0/texture = ExtResource( 11 )
 0/tex_offset = Vector2( 0, 0 )
@@ -55,11 +56,11 @@
 0/shapes = [  ]
 0/z_index = 0
 
-[sub_resource type="DynamicFont" id=2]
+[sub_resource type="DynamicFont" id=3]
 size = 8
 font_data = ExtResource( 9 )
 
-[sub_resource type="DynamicFont" id=3]
+[sub_resource type="DynamicFont" id=4]
 size = 8
 font_data = ExtResource( 8 )
 
@@ -75,7 +76,7 @@ tile_data = PoolIntArray( 262147, 0, 131072, 262148, 0, 131074, 262149, 0, 65538
 [node name="TileMapBG" type="TileMap" parent="."]
 position = Vector2( 0, 8 )
 z_index = -10
-tile_set = SubResource( 4 )
+tile_set = SubResource( 2 )
 cell_size = Vector2( 16, 16 )
 format = 1
 tile_data = PoolIntArray( 196610, 0, 65536, 196611, 0, 65537, 196612, 0, 65537, 196613, 0, 65537, 196614, 0, 3, 262146, 0, 196609, 262147, 0, 131074, 262148, 0, 131074, 262149, 0, 131074, 262150, 0, 65539, 262154, 0, 65536, 262155, 0, 65537, 262156, 0, 3, 262164, 0, 65536, 262165, 0, 3, 327682, 0, 1, 327683, 0, 196611, 327684, 0, 131073, 327685, 0, 131074, 327686, 0, 65539, 327690, 0, 196609, 327691, 0, 131074, 327692, 0, 65539, 327697, 0, 65536, 327698, 0, 3, 327700, 0, 196609, 327701, 0, 65539, 393220, 0, 196609, 393221, 0, 131074, 393222, 0, 65539, 393224, 0, 65536, 393225, 0, 65537, 393226, 0, 65538, 393227, 0, 131074, 393228, 0, 131075, 393229, 0, 3, 393232, 0, 65536, 393233, 0, 65538, 393234, 0, 131075, 393235, 0, 65537, 393236, 0, 65538, 393237, 0, 131075, 393238, 0, 3, 458755, 0, 65536, 458756, 0, 65538, 458757, 0, 131074, 458758, 0, 131075, 458759, 0, 65537, 458760, 0, 65538, 458761, 0, 131074, 458762, 0, 131074, 458763, 0, 131074, 458764, 0, 131074, 458765, 0, 131075, 458766, 0, 65537, 458767, 0, 65537, 458768, 0, 65538, 458769, 0, 131074, 458770, 0, 131074, 458771, 0, 131074, 458772, 0, 131074, 458773, 0, 131074, 458774, 0, 65539, 524291, 0, 1, 524292, 0, 131073, 524293, 0, 131074, 524294, 0, 131074, 524295, 0, 131074, 524296, 0, 131074, 524297, 0, 131074, 524298, 0, 131074, 524299, 0, 131074, 524300, 0, 131074, 524301, 0, 131074, 524302, 0, 131074, 524303, 0, 131074, 524304, 0, 131074, 524305, 0, 131074, 524306, 0, 131074, 524307, 0, 131074, 524308, 0, 131074, 524309, 0, 131074, 524310, 0, 65539, 589828, 0, 196609, 589829, 0, 196610, 589830, 0, 196611, 589831, 0, 196611, 589832, 0, 131073, 589833, 0, 131074, 589834, 0, 196610, 589835, 0, 196611, 589836, 0, 196611, 589837, 0, 196611, 589838, 0, 196611, 589839, 0, 131073, 589840, 0, 131074, 589841, 0, 131074, 589842, 0, 131074, 589843, 0, 131074, 589844, 0, 131074, 589845, 0, 131074, 589846, 0, 65539, 655364, 0, 1, 655365, 0, 196608, 655368, 0, 196609, 655369, 0, 131074, 655370, 0, 65539, 655375, 0, 196609, 655376, 0, 131074, 655377, 0, 131074, 655378, 0, 131074, 655379, 0, 196610, 655380, 0, 196611, 655381, 0, 196611, 655382, 0, 196608, 720897, 0, 65536, 720898, 0, 3, 720903, 0, 65536, 720904, 0, 65538, 720905, 0, 131074, 720906, 0, 131075, 720907, 0, 65537, 720908, 0, 65537, 720909, 0, 65537, 720910, 0, 65537, 720911, 0, 65538, 720912, 0, 131074, 720913, 0, 131074, 720914, 0, 196610, 720915, 0, 196608, 786433, 0, 1, 786434, 0, 2, 786435, 0, 3, 786439, 0, 1, 786440, 0, 131073, 786441, 0, 131074, 786442, 0, 131074, 786443, 0, 131074, 786444, 0, 131074, 786445, 0, 131074, 786446, 0, 131074, 786447, 0, 131074, 786448, 0, 131074, 786449, 0, 196610, 786450, 0, 196608, 851970, 0, 1, 851971, 0, 196608, 851976, 0, 1, 851977, 0, 196611, 851978, 0, 196611, 851979, 0, 196611, 851980, 0, 196611, 851981, 0, 196611, 851982, 0, 196611, 851983, 0, 196611, 851984, 0, 196611, 851985, 0, 196608 )
@@ -124,11 +125,11 @@ block_directions = 7
 position = Vector2( 144, 192 )
 grid_position_x = 9
 grid_position_y = 12
-real_name = "Exposure"
-level_path = "res://Levels/Level4.tscn"
-level_name = "level4"
-num_films = 2
-block_directions = 7
+real_name = "Compress"
+level_path = "res://Levels/Level5.tscn"
+level_name = "level5"
+num_films = 1
+block_directions = 14
 
 [node name="Player" type="Node2D" parent="."]
 position = Vector2( 48, 64 )
@@ -179,7 +180,7 @@ margin_left = 4.0
 margin_top = 2.0
 margin_right = 128.0
 margin_bottom = 16.0
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 3 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "My Cool Level"
 __meta__ = {
@@ -191,7 +192,7 @@ margin_left = 20.0
 margin_top = 16.0
 margin_right = 144.0
 margin_bottom = 30.0
-custom_fonts/font = SubResource( 3 )
+custom_fonts/font = SubResource( 4 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "x0/0"
 __meta__ = {
@@ -221,3 +222,6 @@ grid_position_x = 3
 position = Vector2( 144, 128 )
 grid_position_x = 9
 grid_position_y = 8
+
+[node name="GuiOverlay" parent="." instance=ExtResource( 13 )]
+is_level_select = true

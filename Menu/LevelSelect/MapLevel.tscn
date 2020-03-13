@@ -14,4 +14,4 @@ grid_position_y = 2
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 2 )
 centered = false
-hframes = 2
+hframes = 3

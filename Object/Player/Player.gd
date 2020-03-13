@@ -137,7 +137,6 @@ func _physics_process(delta: float):
 	velocity -= floorveloc
 	###### 
 	if is_on_floor():
-		var old_walk_timer := walk_timer
 		walk_timer += delta * velocity.x * 0.04
 		var arot := Vector2(1, 0).rotated(walk_timer*PI*2)
 		var brot := Vector2(-1, 0).rotated(walk_timer*PI*2)
@@ -156,14 +155,15 @@ func _physics_process(delta: float):
 	node_face.force += total_accel * Vector2(1, -1) * delta * 70
 	for node in [node_gbl, node_gbr, node_gtl, node_gtr, node_face]:
 		node.force += velocity * delta * 21.0
-	var tx = $Polygon2D.global_transform
-	var tl = tx.xform_inv(node_gtl.global_position + Vector2(-2, -2))
-	var tr = tx.xform_inv(node_gtr.global_position + Vector2(2, -2))
-	var bl = tx.xform_inv(node_gbl.global_position + Vector2(-2, 2))
-	var br = tx.xform_inv(node_gbr.global_position + Vector2(2, 2))
-	node_face_sprite.offset = node_face.global_position - node_face.target.global_position
-	$Polygon2D.polygon = PoolVector2Array([tl, tr, br, bl])
-	$Polygon2D.update()
+	if node_face.is_inside_tree():
+		var tx = $Polygon2D.global_transform
+		var tl = tx.xform_inv(node_gtl.global_position + Vector2(-2, -2))
+		var tr = tx.xform_inv(node_gtr.global_position + Vector2(2, -2))
+		var bl = tx.xform_inv(node_gbl.global_position + Vector2(-2, 2))
+		var br = tx.xform_inv(node_gbr.global_position + Vector2(2, 2))
+		node_face_sprite.offset = node_face.global_position - node_face.target.global_position
+		$Polygon2D.polygon = PoolVector2Array([tl, tr, br, bl])
+		$Polygon2D.update()
 	###### GRAB OBJECT CODE ######
 	var coffset = Vector2.ZERO
 	if Input.is_action_just_pressed("action_grab") and not is_stopped:

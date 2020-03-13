@@ -32,7 +32,11 @@ func _ready():
 		set_notify_transform(true)
 	else:
 		if GameData.is_level_completed(level_name):
-			$Sprite.frame = 0
+			var num = GameData.count_collected_films_in_level(level_name)
+			if num >= num_films:
+				$Sprite.frame = 0
+			else:
+				$Sprite.frame = 2
 		else:
 			$Sprite.frame = 1
 

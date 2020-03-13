@@ -32,6 +32,7 @@ func _physics_process(delta: float):
 		else:
 			move = diff.normalized() * speed
 		if move != Vector2.ZERO:
+# warning-ignore:return_value_discarded
 			move_and_collide(move, true, true, false)
 
 func _on_PlayerKill_body_entered(body):
@@ -44,14 +45,14 @@ func _on_BoxCrush_body_entered(body):
 		is_crushing = false
 		wait = 1.0
 
-func _on_CameraDetect_body_entered(body):
+func _on_CameraDetect_body_entered(_body):
 	num_camera += 1
 
-func _on_CameraDetect_body_exited(body):
+func _on_CameraDetect_body_exited(_body):
 	num_camera -= 1
 
-func _on_PlayerDetect_body_entered(body):
+func _on_PlayerDetect_body_entered(_body):
 	num_player += 1
 
-func _on_PlayerDetect_body_exited(body):
+func _on_PlayerDetect_body_exited(_body):
 	num_player -= 1

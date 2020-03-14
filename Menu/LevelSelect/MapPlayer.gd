@@ -55,6 +55,12 @@ func try_move_direction(dir: Vector2):
 		levelselect.start_move()
 		GameData.set_overworld_position(current_position)
 		$SndWalk.play()
+		if dir.x == 1:
+			$Gfx.scale.x = 1
+		elif dir.x == -1:
+			$Gfx.scale.x = -1
+		if dir.y == -1:
+			$Gfx/Sprite2.hide()
 
 func _physics_process(delta):
 	if not is_moving:
@@ -75,6 +81,7 @@ func _physics_process(delta):
 			is_moving = false
 			global_position = target
 			levelselect.stop_at(current_position)
+			$Gfx/Sprite2.show()
 		else:
 			global_position += diff.normalized() * delta * SPEED
 

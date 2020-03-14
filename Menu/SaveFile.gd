@@ -12,6 +12,7 @@ func set_display():
 	$Load/FilmCount.text = "{0}/{1}".format([num, KNOWN_FILMS])
 
 func _ready():
+	$Title.text = title
 	var fh := File.new()
 	if fh.file_exists(file_name):
 		should_load = true

@@ -10,6 +10,11 @@ position = Vector2( 96, 32 )
 script = ExtResource( 1 )
 grid_position_x = 6
 grid_position_y = 2
+real_name = ""
+level_path = ""
+level_name = ""
+num_films = 0
+block_directions = 0
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 2 )

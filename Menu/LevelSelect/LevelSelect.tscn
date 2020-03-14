@@ -33,6 +33,10 @@
 0/autotile/z_index_map = [  ]
 0/occluder_offset = Vector2( 0, 0 )
 0/navigation_offset = Vector2( 0, 0 )
+0/shape_offset = Vector2( 0, 0 )
+0/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+0/shape_one_way = false
+0/shape_one_way_margin = 0.0
 0/shapes = [  ]
 0/z_index = 0
 
@@ -54,6 +58,10 @@
 0/autotile/z_index_map = [  ]
 0/occluder_offset = Vector2( 0, 0 )
 0/navigation_offset = Vector2( 0, 0 )
+0/shape_offset = Vector2( 0, 0 )
+0/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+0/shape_one_way = false
+0/shape_one_way_margin = 0.0
 0/shapes = [  ]
 0/z_index = 0
 
@@ -144,17 +152,18 @@ visible = false
 color = Color( 0.172549, 1, 0.027451, 1 )
 polygon = PoolVector2Array( 2, 12, 2, -8, 14, -8, 14, 12 )
 
-[node name="Sprite" type="Sprite" parent="Player"]
-position = Vector2( 8, 1 )
-texture = ExtResource( 3 )
-
-[node name="Sprite2" type="Sprite" parent="Player"]
-position = Vector2( 8, 1 )
-texture = ExtResource( 10 )
-
 [node name="SndWalk" type="AudioStreamPlayer" parent="Player"]
 stream = ExtResource( 14 )
 bus = "Sound"
+
+[node name="Gfx" type="Node2D" parent="Player"]
+position = Vector2( 8, 1 )
+
+[node name="Sprite" type="Sprite" parent="Player/Gfx"]
+texture = ExtResource( 3 )
+
+[node name="Sprite2" type="Sprite" parent="Player/Gfx"]
+texture = ExtResource( 10 )
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 

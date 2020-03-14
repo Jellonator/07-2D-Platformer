@@ -73,7 +73,7 @@ func _ready():
 		return
 	else:
 		if not display_graphic:
-			$Polygon2D.hide()
+			$Gfx.hide()
 	current_node = initial_node
 	node_position = initial_position
 	if initial_direction == 0:
@@ -137,7 +137,8 @@ func _physics_process(delta):
 	var pos := curve.interpolate(current_node, node_position)
 	var ppos = global_position
 	position = pos
-	$Polygon2D.global_position = ppos
+	$Gfx.global_position = ppos
+	$Gfx/Gear.rotation += deg2rad((ppos - position).length()) * 4 * dir
 
 func do_press():
 	button_status += 1

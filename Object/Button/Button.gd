@@ -6,11 +6,13 @@ var num := 0
 
 func begin_press():
 	get_tree().call_group(group, "do_press")
-	$Polygon2D2.scale.y = 0.5
+#	$Polygon2D2.scale.y = 0.5
+	$Sprite.frame = 1
 
 func end_press():
 	get_tree().call_group(group, "do_release")
-	$Polygon2D2.scale.y = 1.0
+#	$Polygon2D2.scale.y = 1.0
+	$Sprite.frame = 0
 
 func _on_Area2D_body_entered(_body):
 	num += 1

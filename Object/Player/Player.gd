@@ -158,8 +158,8 @@ func _physics_process(delta: float):
 			walk_timer = 1.0
 	var total_accel := velocity - prev_veloc
 	for node in [node_gbl, node_gbr]:
-		node.force += total_accel * Vector2(1, -1) * delta * 150
-	node_face.force += total_accel * Vector2(1, -1) * delta * 70
+		node.force += total_accel * Vector2(1, 0) * delta * 150
+	node_face.force += total_accel * Vector2(1, 0) * delta * 70
 	for node in [node_gbl, node_gbr, node_gtl, node_gtr, node_face]:
 		node.force += velocity * delta * 21.0
 	if node_face.is_inside_tree():

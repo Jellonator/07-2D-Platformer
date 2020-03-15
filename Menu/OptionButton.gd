@@ -9,7 +9,10 @@ func _ready():
 	unselect()
 
 func activate():
-	pass
+	var scene = load("res://Menu/KeyRebind.tscn")
+	var err = get_tree().change_scene_to(scene)
+	if err != OK:
+		push_error("Could not load key rebind [{0}]".format(err))
 
 func delete():
 	pass

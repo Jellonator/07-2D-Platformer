@@ -1,22 +1,16 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Menu/File.tscn" type="PackedScene" id=1]
-[ext_resource path="res://Ext/KenneyUI/Spritesheet/UIpackSheet_transparent.png" type="Texture" id=2]
+[ext_resource path="res://Menu/ItemSelector.gd" type="Script" id=2]
 [ext_resource path="res://Menu/MainMenu.gd" type="Script" id=3]
 [ext_resource path="res://Ext/KenneyFont/Fonts/Kenney Pixel.ttf" type="DynamicFontData" id=4]
 [ext_resource path="res://Object/Crate/crate.png" type="Texture" id=5]
 [ext_resource path="res://Ext/KenneyUI/button-red.png" type="Texture" id=6]
 [ext_resource path="res://Menu/OptionButton.gd" type="Script" id=7]
 [ext_resource path="res://Ext/KenneyUI/button-red-pressed.png" type="Texture" id=8]
+[ext_resource path="res://Menu/font_normal.tres" type="DynamicFont" id=9]
 
-[sub_resource type="DynamicFont" id=2]
-font_data = ExtResource( 4 )
-
-[sub_resource type="AtlasTexture" id=1]
-atlas = ExtResource( 2 )
-region = Rect2( 90, 468, 16, 16 )
-
-[sub_resource type="DynamicFont" id=3]
+[sub_resource type="DynamicFont" id=1]
 font_data = ExtResource( 4 )
 
 [node name="MainMenu" type="Control"]
@@ -39,6 +33,7 @@ margin_left = 136.0
 margin_top = 56.0
 margin_right = 264.0
 margin_bottom = 184.0
+script = ExtResource( 2 )
 
 [node name="File1" parent="Center/Saves" instance=ExtResource( 1 )]
 file_name = "user://file1.save"
@@ -101,24 +96,19 @@ margin_left = 4.0
 margin_top = 2.0
 margin_right = 4.0
 margin_bottom = -6.0
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = ExtResource( 9 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Options"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Sprite" type="Sprite" parent="."]
-position = Vector2( 136, 68 )
-texture = SubResource( 1 )
-offset = Vector2( -8, 8 )
-
 [node name="Label" type="Label" parent="."]
 anchor_bottom = 2.0
 margin_top = 4.0
 margin_right = 165.0
 margin_bottom = -460.0
-custom_fonts/font = SubResource( 3 )
+custom_fonts/font = SubResource( 1 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "  Press           to Create/Select File"
 valign = 1
@@ -130,7 +120,7 @@ __meta__ = {
 margin_top = 24.0
 margin_right = 153.0
 margin_bottom = 40.0
-custom_fonts/font = SubResource( 3 )
+custom_fonts/font = SubResource( 1 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "  Press           to Delete File"
 valign = 1

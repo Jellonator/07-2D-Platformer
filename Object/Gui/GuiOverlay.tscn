@@ -93,12 +93,15 @@ offset = Vector2( -8, 8 )
 
 [node name="SfxPause" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 6 )
+volume_db = -12.0
 bus = "Sound"
 
 [node name="SfxMove" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 5 )
+volume_db = -12.0
 bus = "Sound"
 
 [node name="SfxUnpause" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 4 )
+volume_db = -12.0
 bus = "Sound"

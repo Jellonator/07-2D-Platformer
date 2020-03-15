@@ -5,7 +5,7 @@
 [ext_resource path="res://Object/Player/Gelatina/BG.PNG" type="Texture" id=3]
 [ext_resource path="res://Menu/LevelSelect/MapPlayer.gd" type="Script" id=4]
 [ext_resource path="res://Menu/LevelSelect/LevelSelect.gd" type="Script" id=5]
-[ext_resource path="res://Ext/KenneyUI/9-Slice/Outline/blue.png" type="Texture" id=6]
+[ext_resource path="res://Ext/KenneyUI/button-orange.png" type="Texture" id=6]
 [ext_resource path="res://Object/Film/FilmCollected.png" type="Texture" id=7]
 [ext_resource path="res://Ext/KenneyFont/Fonts/Kenney Blocks.ttf" type="DynamicFontData" id=8]
 [ext_resource path="res://Ext/KenneyFont/Fonts/Kenney Pixel Square.ttf" type="DynamicFontData" id=9]
@@ -178,11 +178,10 @@ __meta__ = {
 anchor_right = 1.0
 anchor_bottom = 1.0
 texture = ExtResource( 6 )
-region_rect = Rect2( 0, 0, 48, 48 )
-patch_margin_left = 16
-patch_margin_top = 16
-patch_margin_right = 16
-patch_margin_bottom = 16
+patch_margin_left = 4
+patch_margin_top = 3
+patch_margin_right = 4
+patch_margin_bottom = 5
 axis_stretch_horizontal = 1
 axis_stretch_vertical = 1
 __meta__ = {
@@ -191,9 +190,9 @@ __meta__ = {
 
 [node name="Title" type="Label" parent="CanvasLayer/Display"]
 margin_left = 4.0
-margin_top = 2.0
+margin_top = 1.0
 margin_right = 128.0
-margin_bottom = 16.0
+margin_bottom = 15.0
 custom_fonts/font = SubResource( 3 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "My Cool Level"
@@ -202,10 +201,10 @@ __meta__ = {
 }
 
 [node name="Num" type="Label" parent="CanvasLayer/Display"]
-margin_left = 20.0
-margin_top = 16.0
-margin_right = 144.0
-margin_bottom = 30.0
+margin_left = 19.0
+margin_top = 14.0
+margin_right = 143.0
+margin_bottom = 28.0
 custom_fonts/font = SubResource( 4 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "x0/0"
@@ -215,9 +214,9 @@ __meta__ = {
 
 [node name="TextureRect" type="TextureRect" parent="CanvasLayer/Display"]
 margin_left = 2.0
-margin_top = 12.0
+margin_top = 11.0
 margin_right = 18.0
-margin_bottom = 28.0
+margin_bottom = 27.0
 texture = ExtResource( 7 )
 __meta__ = {
 "_edit_use_anchors_": false

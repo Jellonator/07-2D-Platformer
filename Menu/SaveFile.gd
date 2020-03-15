@@ -5,6 +5,14 @@ export var title := ""
 
 var should_load := true
 const KNOWN_FILMS := 10
+onready var pressed := false
+
+onready var move_nodes := [
+	$Title,
+	$Load/FilmCount,
+	$Load/TextureRect,
+	$Create/CreateLabel
+]
 
 func set_display():
 	var cfg = GameData.load_to_config(file_name)
@@ -22,19 +30,19 @@ func _ready():
 		should_load = false
 		$Load.hide()
 
-func select():
+func do_load_game():
+	GameData.load_data(file_name)
+	var scene = preload("res://Menu/LevelSelect/LevelSelect.tscn")
+	var err = get_tree().change_scene_to(scene)
+	if err != OK:
+		push_error("Could not load level select [{0}]".format(err))
+
+func activate():
 	if should_load:
-		GameData.load_data(file_name)
-		var scene = preload("res://Menu/LevelSelect/LevelSelect.tscn")
-		var err = get_tree().change_scene_to(scene)
-		if err != OK:
-			push_error("Could not load level select [{0}]".format(err))
+		do_load_game()
 	else:
-		$Create.hide()
-		$Load.show()
-		should_load = true
 		GameData.create_data(file_name)
-		set_display()
+		do_load_game()
 
 func delete():
 	if should_load:
@@ -45,3 +53,25 @@ func delete():
 		var err = dir.remove(file_name)
 		if err != OK:
 			push_error("Could not delete save " + file_name + " [" + str(err) + "]")
+
+func select():
+	if pressed:
+		return
+	pressed = true
+	$Create/Unpressed.hide()
+	$Create/Pressed.show()
+	$Load/Unpressed.hide()
+	$Load/Pressed.show()
+	for node in move_nodes:
+		node.rect_position += Vector2(0, 2)
+
+func unselect():
+	if not pressed:
+		return
+	pressed = false
+	$Create/Unpressed.show()
+	$Create/Pressed.hide()
+	$Load/Unpressed.show()
+	$Load/Pressed.hide()
+	for node in move_nodes:
+		node.rect_position -= Vector2(0, 2)

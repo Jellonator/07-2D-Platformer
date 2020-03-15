@@ -6,10 +6,9 @@
 [node name="Level" type="Node2D" groups=[
 "stop",
 ]]
-position = Vector2( 96, 32 )
 script = ExtResource( 1 )
-grid_position_x = 6
-grid_position_y = 2
+grid_position_x = 0
+grid_position_y = 0
 real_name = ""
 level_path = ""
 level_name = ""

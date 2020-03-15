@@ -12,8 +12,8 @@ Photobound is a 2D puzzle platforming game where the screen boundaries are solid
  * Restart - R
  * Pause - Escape
  
- ## Todo:
+ (Controls are rebindable, controller is supported)
  
- * Rebindable controls
+## Todo:
  * Make autosave more apparent
  * Better menu (e.g. add confirmation for deleting a save)

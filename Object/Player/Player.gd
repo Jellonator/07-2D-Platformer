@@ -49,28 +49,24 @@ func _ready():
 	node_gtl = scene_gelatin.instance()
 	node_gtl.position = $GTL.global_position
 	node_gtl.target = $GTL
-	get_parent().call_deferred("add_child", node_gtl)
 	node_gtr = scene_gelatin.instance()
 	node_gtr.position = $GTR.global_position
 	node_gtr.target = $GTR
-	get_parent().call_deferred("add_child", node_gtr)
 	node_gbl = scene_gelatin.instance()
 	node_gbl.position = $GBL.global_position
 	node_gbl.target = $GBL
-	get_parent().call_deferred("add_child", node_gbl)
 	node_gbr = scene_gelatin.instance()
 	node_gbr.position = $GBR.global_position
 	node_gbr.target = $GBR
-	get_parent().call_deferred("add_child", node_gbr)
 	node_face = scene_gelatin.instance()
 	node_face.position = $GFACE.global_position
 	node_face.target = $GFACE
-	get_parent().call_deferred("add_child", node_face)
 	node_gtl.gravity_scale = 0
 	node_gtr.gravity_scale = 0
 	node_face.gravity_scale = 0
-	yield(get_tree(), "idle_frame")
+	yield(get_tree(), "physics_frame")
 	for node in [node_gtl, node_gbl, node_gbr, node_gtr, node_face]:
+		get_parent().add_child(node)
 		node.pin_to(self)
 		node.hide()
 
@@ -172,30 +168,46 @@ func _physics_process(delta: float):
 		$Polygon2D.polygon = PoolVector2Array([tl, tr, br, bl])
 		$Polygon2D.update()
 	###### GRAB OBJECT CODE ######
-	var coffset = Vector2.ZERO
 	var topos = $Flip/GrabPosition.global_position
 	if Input.is_action_just_pressed("action_grab") and not is_stopped:
 		if grabbed_object != null:
-			grabbed_object.grab_end()
-			var veloc := Vector2.ZERO
-			if not Input.is_action_pressed("move_down"):
-				if Input.is_action_pressed("move_up"):
-					veloc += (Vector2(1, -2) * $Flip.scale).normalized() * 120
-				else:
-					veloc += (Vector2(1, -1) * $Flip.scale).normalized() * 100
-				if not is_on_floor():
-					veloc.y = 0
-				veloc += velocity
-			grabbed_object.teleport_to(topos, true, coffset)
-			grabbed_object.apply_central_impulse(veloc)
-			grabbed_object = null
+			drop_grabbed_object()
 		elif potential_grabs.size() > 0:
 			if is_on_floor():
-				grabbed_object = get_best_grab()
-				grabbed_object.grab_begin()
-				grabbed_object.teleport_to(topos, false, coffset)
+				set_grabbed_object(get_best_grab())
 	elif grabbed_object != null:
-		grabbed_object.teleport_to(topos, true, coffset)
+		grabbed_object.teleport_to(topos, true, get_camera_offset())
+
+func get_camera_offset() -> Vector2:
+	if not node_face.is_inside_tree():
+		return Vector2.ZERO
+	return node_face.get_diff() * 0.4 +\
+		node_gtl.get_diff() * 0.2 + node_gtr.get_diff() * 0.2 +\
+		node_gbl.get_diff() * 0.1 + node_gbr.get_diff() * 0.1
+
+func drop_grabbed_object():
+	var topos = $Flip/GrabPosition.global_position
+	grabbed_object.grab_end()
+	var veloc := Vector2.ZERO
+	if not Input.is_action_pressed("move_down"):
+		if Input.is_action_pressed("move_up"):
+			veloc += (Vector2(1, -2) * $Flip.scale).normalized() * 120
+		else:
+			veloc += (Vector2(1, -1) * $Flip.scale).normalized() * 100
+		if not is_on_floor():
+			veloc.y = 0
+		veloc += velocity
+	grabbed_object.teleport_to(topos, true, get_camera_offset())
+	grabbed_object.apply_central_impulse(veloc)
+	grabbed_object = null
+
+func set_grabbed_object(object):
+	if grabbed_object != null:
+		drop_grabbed_object()
+	var topos = $Flip/GrabPosition.global_position
+	grabbed_object = object
+	grabbed_object.grab_begin()
+	grabbed_object.teleport_to(topos, false, get_camera_offset())
 
 func _input(event):
 	if event.is_action_pressed("action_jump") and is_on_floor() and not is_stopped:

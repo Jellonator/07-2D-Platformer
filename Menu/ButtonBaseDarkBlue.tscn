@@ -1,0 +1,66 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://Ext/KenneyUI/button-blue-colored.png" type="Texture" id=1]
+[ext_resource path="res://Ext/KenneyUI/button-blue-colored-pressed.png" type="Texture" id=2]
+[ext_resource path="res://Menu/font_normal.tres" type="DynamicFont" id=3]
+[ext_resource path="res://Ext/KenneyUI/button-disabled.png" type="Texture" id=4]
+[ext_resource path="res://Ext/KenneyUI/button-blue-colored-unselected.png" type="Texture" id=5]
+
+[sub_resource type="StyleBoxTexture" id=1]
+texture = ExtResource( 1 )
+region_rect = Rect2( 0, 0, 7, 9 )
+margin_left = 4.0
+margin_right = 4.0
+margin_top = 3.0
+margin_bottom = 5.0
+
+[sub_resource type="StyleBoxTexture" id=2]
+texture = ExtResource( 2 )
+region_rect = Rect2( 0, 0, 7, 9 )
+margin_left = 4.0
+margin_right = 4.0
+margin_top = 5.0
+margin_bottom = 4.0
+
+[sub_resource type="StyleBoxEmpty" id=3]
+
+[sub_resource type="StyleBoxTexture" id=4]
+texture = ExtResource( 4 )
+region_rect = Rect2( 0, 0, 7, 9 )
+margin_left = 4.0
+margin_right = 4.0
+margin_top = 3.0
+margin_bottom = 5.0
+
+[sub_resource type="StyleBoxTexture" id=5]
+texture = ExtResource( 5 )
+region_rect = Rect2( 0, 0, 7, 9 )
+margin_left = 4.0
+margin_right = 4.0
+margin_top = 3.0
+margin_bottom = 5.0
+
+[node name="Button" type="Button"]
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = -128.0
+margin_top = -12.0
+margin_bottom = 12.0
+custom_styles/hover = SubResource( 1 )
+custom_styles/pressed = SubResource( 2 )
+custom_styles/focus = SubResource( 3 )
+custom_styles/disabled = SubResource( 4 )
+custom_styles/normal = SubResource( 5 )
+custom_fonts/font = ExtResource( 3 )
+custom_colors/font_color_disabled = Color( 0.227451, 0.266667, 0.4, 1 )
+custom_colors/font_color = Color( 0.0941176, 0.0784314, 0.145098, 1 )
+custom_colors/font_color_hover = Color( 0.227451, 0.266667, 0.4, 1 )
+custom_colors/font_color_pressed = Color( 0.227451, 0.266667, 0.4, 1 )
+keep_pressed_outside = true
+text = "        Change"
+align = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}

@@ -67,6 +67,7 @@ func get_film_text() -> String:
 	return "{0}/{1}".format([num, num_films])
 
 func activate():
+	GameData.clear_checkpoint()
 	var err = get_tree().change_scene(level_path)
 	if err != OK:
 		push_error("Could not load level: \"{0}\" [{1}]".format(level_path, err))

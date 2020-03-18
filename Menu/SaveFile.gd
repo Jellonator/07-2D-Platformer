@@ -55,23 +55,36 @@ func delete():
 			push_error("Could not delete save " + file_name + " [" + str(err) + "]")
 
 func select():
+	if should_load:
+		$Load.grab_focus()
+	else:
+		$Create.grab_focus()
 	if pressed:
 		return
 	pressed = true
-	$Create/Unpressed.hide()
-	$Create/Pressed.show()
-	$Load/Unpressed.hide()
-	$Load/Pressed.show()
-	for node in move_nodes:
-		node.rect_position += Vector2(0, 2)
 
 func unselect():
+	$Load.release_focus()
+	$Create.release_focus()
 	if not pressed:
 		return
 	pressed = false
-	$Create/Unpressed.show()
-	$Create/Pressed.hide()
-	$Load/Unpressed.show()
-	$Load/Pressed.hide()
-	for node in move_nodes:
-		node.rect_position -= Vector2(0, 2)
+
+var is_down := false
+func _physics_process(_delta):
+	var is_pressed = $Load.pressed or $Create.pressed
+	if is_down and not is_pressed:
+		for node in move_nodes:
+			node.rect_position -= Vector2(0, 2)
+	elif not is_down and is_pressed:
+		for node in move_nodes:
+			node.rect_position += Vector2(0, 2)
+	is_down = is_pressed
+
+func _on_Create_pressed():
+	activate()
+	get_parent().select(get_position_in_parent())
+
+func _on_Load_pressed():
+	activate()
+	get_parent().select(get_position_in_parent())

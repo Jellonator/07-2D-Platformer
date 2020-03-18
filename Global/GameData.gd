@@ -99,3 +99,14 @@ func is_level_completed(levelname: String):
 
 func set_level_completed(levelname: String):
 	config.set_value(SECTION_LEVEL_COMPLETED, levelname, true)
+
+var current_checkpoint := -1
+
+func clear_checkpoint():
+	current_checkpoint = -1
+
+func get_checkpoint() -> int:
+	return current_checkpoint
+
+func set_checkpoint(value: int):
+	current_checkpoint = value

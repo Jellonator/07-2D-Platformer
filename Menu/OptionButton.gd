@@ -1,10 +1,6 @@
 extends Control
 onready var pressed := false
 
-onready var move_nodes := [
-	$Label
-]
-
 func _ready():
 	unselect()
 
@@ -18,19 +14,17 @@ func delete():
 	pass
 
 func select():
+	grab_focus()
 	if pressed:
 		return
 	pressed = true
-	$Unpressed.hide()
-	$Pressed.show()
-	for node in move_nodes:
-		node.rect_position += Vector2(0, 2)
 
 func unselect():
+	release_focus()
 	if not pressed:
 		return
 	pressed = false
-	$Unpressed.show()
-	$Pressed.hide()
-	for node in move_nodes:
-		node.rect_position -= Vector2(0, 2)
+
+func _on_Options_pressed():
+	activate()
+	get_parent().select(get_position_in_parent())

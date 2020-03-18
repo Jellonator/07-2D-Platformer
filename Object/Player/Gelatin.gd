@@ -21,3 +21,9 @@ func _ready():
 
 func pin_to(node):
 	$PinJoint2D.node_a = $PinJoint2D.get_path_to(node)
+
+func get_diff() -> Vector2:
+	if target != null:
+		return global_position - target.global_position
+	else:
+		return Vector2.ZERO

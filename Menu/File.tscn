@@ -1,14 +1,12 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Object/Film/FilmCollected.png" type="Texture" id=1]
 [ext_resource path="res://Menu/font_normal.tres" type="DynamicFont" id=2]
 [ext_resource path="res://Menu/font_blocky.tres" type="DynamicFont" id=3]
 [ext_resource path="res://Menu/font_title.tres" type="DynamicFont" id=4]
-[ext_resource path="res://Ext/KenneyUI/button-blue-colored.png" type="Texture" id=5]
+[ext_resource path="res://Menu/ButtonBaseDarkBlue.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Menu/SaveFile.gd" type="Script" id=6]
-[ext_resource path="res://Ext/KenneyUI/button-blue.png" type="Texture" id=7]
-[ext_resource path="res://Ext/KenneyUI/button-blue-colored-pressed.png" type="Texture" id=8]
-[ext_resource path="res://Ext/KenneyUI/button-blue-pressed.png" type="Texture" id=9]
+[ext_resource path="res://Menu/ButtonBaseBlue.tscn" type="PackedScene" id=7]
 
 [node name="File" type="Control"]
 margin_right = 128.0
@@ -19,18 +17,20 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Load" type="Control" parent="."]
-anchor_right = 1.0
+[node name="Load" parent="." instance=ExtResource( 7 )]
+anchor_left = 0.0
+anchor_top = 0.0
 anchor_bottom = 1.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
+margin_left = 0.0
+margin_top = 0.0
+margin_bottom = 0.0
+text = ""
 
 [node name="FilmCount" type="Label" parent="Load"]
-margin_left = 28.0
-margin_top = 12.0
-margin_right = 120.0
-margin_bottom = 28.0
+margin_left = 20.0
+margin_top = 13.0
+margin_right = 112.0
+margin_bottom = 29.0
 custom_fonts/font = ExtResource( 3 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "x0/0"
@@ -39,84 +39,24 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Unpressed" type="NinePatchRect" parent="Load"]
-show_behind_parent = true
-anchor_right = 1.0
-anchor_bottom = 1.0
-texture = ExtResource( 7 )
-patch_margin_left = 4
-patch_margin_top = 4
-patch_margin_right = 4
-patch_margin_bottom = 6
-axis_stretch_horizontal = 2
-axis_stretch_vertical = 2
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Pressed" type="NinePatchRect" parent="Load"]
-visible = false
-show_behind_parent = true
-anchor_right = 1.0
-anchor_bottom = 1.0
-texture = ExtResource( 9 )
-patch_margin_left = 4
-patch_margin_top = 4
-patch_margin_right = 4
-patch_margin_bottom = 4
-axis_stretch_horizontal = 2
-axis_stretch_vertical = 2
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="TextureRect" type="TextureRect" parent="Load"]
-margin_left = 8.0
+margin_left = 3.0
 margin_top = 11.0
-margin_right = 24.0
+margin_right = 19.0
 margin_bottom = 27.0
 texture = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Create" type="Control" parent="."]
-anchor_right = 1.0
+[node name="Create" parent="." instance=ExtResource( 5 )]
+anchor_left = 0.0
+anchor_top = 0.0
 anchor_bottom = 1.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Unpressed" type="NinePatchRect" parent="Create"]
-show_behind_parent = true
-anchor_right = 1.0
-anchor_bottom = 1.0
-texture = ExtResource( 5 )
-patch_margin_left = 4
-patch_margin_top = 4
-patch_margin_right = 4
-patch_margin_bottom = 6
-axis_stretch_horizontal = 2
-axis_stretch_vertical = 2
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Pressed" type="NinePatchRect" parent="Create"]
-visible = false
-show_behind_parent = true
-anchor_right = 1.0
-anchor_bottom = 1.0
-texture = ExtResource( 8 )
-patch_margin_left = 4
-patch_margin_top = 4
-patch_margin_right = 4
-patch_margin_bottom = 4
-axis_stretch_horizontal = 2
-axis_stretch_vertical = 2
-__meta__ = {
-"_edit_use_anchors_": false
-}
+margin_left = 0.0
+margin_top = 0.0
+margin_bottom = 0.0
+text = ""
 
 [node name="CreateLabel" type="Label" parent="Create"]
 anchor_right = 1.0
@@ -141,3 +81,5 @@ text = "File 1"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+[connection signal="pressed" from="Load" to="." method="_on_Load_pressed"]
+[connection signal="pressed" from="Create" to="." method="_on_Create_pressed"]

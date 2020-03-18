@@ -90,7 +90,7 @@ func _physics_process(delta):
 					$SfxUnpause.play()
 				Action.RESTART:
 					get_tree().paused = false
-					restart_level()
+					restart_level(true)
 					return
 				Action.EXIT:
 					get_tree().paused = false
@@ -103,13 +103,15 @@ func _physics_process(delta):
 					return
 	if Input.is_action_just_pressed("action_restart"):
 		get_tree().paused = false
-		restart_level()
+		restart_level(false)
 		return
 	$Select.visible = get_tree().paused
 	$Sprite.visible = get_tree().paused
 
-func restart_level():
+func restart_level(clear_checkpoint: bool):
+	if clear_checkpoint:
+		GameData.clear_checkpoint()
 	var path = get_tree().current_scene.filename
 	var err = get_tree().change_scene(path)
 	if err != OK:
-		push_error("Could not kill >:( (tried to load{0} [{1}])".format([path, err]))
+		push_error("Could not change scene (tried to load {0} [{1}])".format([path, err]))

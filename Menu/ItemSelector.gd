@@ -6,6 +6,19 @@ var items := []
 var cursor: Node2D
 var current := 0
 var snd_move: AudioStreamPlayer
+var locked := false
+
+func set_locked(value: bool):
+	locked = value
+
+func begin_lock():
+	locked = true
+
+func end_lock():
+	locked = false
+
+func is_locked() -> bool:
+	return locked
 
 func _ready():
 	items = get_children()
@@ -20,19 +33,29 @@ func _ready():
 	if items[0].has_method("select"):
 		items[0].select()
 
+func update_cursor():
+	if items[current].has_method("get_cursor_position"):
+		cursor.global_position = items[current].get_cursor_position()
+	else:
+		cursor.global_position = items[current].rect_global_position
+
+func force_cursor(node):
+	cursor.global_position = node.rect_global_position
+
 func select(id: int):
+	if is_locked():
+		return
 	if id != current:
 		if items[current].has_method("unselect"):
 			items[current].unselect()
 		if items[id].has_method("select"):
 			items[id].select()
 	current = id
-	if items[id].has_method("get_cursor_position"):
-		cursor.global_position = items[id].get_cursor_position()
-	else:
-		cursor.global_position = items[id].rect_global_position
+	update_cursor()
 
 func _input(event):
+	if is_locked():
+		return
 	if event.is_action_pressed("move_down"):
 		select(posmod(current + 1, items.size()))
 		snd_move.play()
@@ -63,7 +86,7 @@ func _input(event):
 		snd_move.play()
 		accept_event()
 	elif event.is_action_pressed("ui_select") or\
-		 event.is_action_pressed("ui_select"):
+		 event.is_action_pressed("ui_accept"):
 		if items[current].has_method("activate"):
 			items[current].activate()
 		accept_event()

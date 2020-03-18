@@ -54,6 +54,7 @@ margin_left = 0.0
 margin_top = 108.0
 margin_right = 128.0
 margin_bottom = 128.0
+text = "Options"
 script = ExtResource( 7 )
 
 [node name="Label" type="Label" parent="."]

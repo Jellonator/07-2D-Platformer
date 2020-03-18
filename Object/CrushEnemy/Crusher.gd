@@ -31,7 +31,7 @@ func _physics_process(delta: float):
 			$Sprite.offset = Vector2.ZERO
 			velocity.y = clamp(velocity.y + delta * 640.0, 0.0, MAX_VELOCITY)
 		$BoxCrush/Shape.disabled = false
-		var col := move_and_collide(velocity * delta, true, true, false)
+		var col := move_and_collide(velocity * delta, false, true, false)
 		if col != null:
 			is_crushing = false
 			wait = 2.0

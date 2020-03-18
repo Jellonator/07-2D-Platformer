@@ -42,7 +42,12 @@ hframes = 4
 region_enabled = true
 region_rect = Rect2( 0, 0, 64, 32 )
 
-[node name="RayCast2D" type="RayCast2D" parent="."]
+[node name="SolidCast" type="RayCast2D" parent="."]
+position = Vector2( 0, 6 )
+cast_to = Vector2( 0, 4096 )
+collision_mask = 17
+
+[node name="AllCast" type="RayCast2D" parent="."]
 position = Vector2( 0, 6 )
 cast_to = Vector2( 0, 4096 )
 collision_mask = 19

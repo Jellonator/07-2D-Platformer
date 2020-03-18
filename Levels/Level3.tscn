@@ -90,6 +90,16 @@ z_index = -9
 texture = ExtResource( 9 )
 
 [node name="BoxOutline2" type="Sprite" parent="."]
-position = Vector2( 1144, 104 )
+position = Vector2( 912, 200 )
+z_index = -9
+texture = ExtResource( 9 )
+
+[node name="BoxOutline3" type="Sprite" parent="."]
+position = Vector2( 1008, 184 )
+z_index = -9
+texture = ExtResource( 9 )
+
+[node name="BoxOutline4" type="Sprite" parent="."]
+position = Vector2( 1104, 200 )
 z_index = -9
 texture = ExtResource( 9 )

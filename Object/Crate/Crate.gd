@@ -50,3 +50,12 @@ func get_grab_priority() -> int:
 
 func do_crush():
 	queue_free()
+
+# I had my fun launching boxes, but sadly, that era must come to and end.
+func _on_Area2D_body_entered(body):
+	if body != self and is_grabbed:
+		add_collision_exception_with(body)
+
+func _on_Area2D_body_exited(body):
+	if body != self and get_collision_exceptions().has(body):
+		remove_collision_exception_with(body)
